@@ -17,6 +17,11 @@ public final class Database implements AutoCloseable {
             dataFolder.mkdirs();
         }
 
+        try {
+            Class.forName("org.sqlite.JDBC");
+        } catch (ClassNotFoundException ignored) {
+        }
+
         File dbFile = new File(dataFolder, config.databaseFileName());
         HikariConfig hikariConfig = new HikariConfig();
         hikariConfig.setJdbcUrl("jdbc:sqlite:" + dbFile.getAbsolutePath());
