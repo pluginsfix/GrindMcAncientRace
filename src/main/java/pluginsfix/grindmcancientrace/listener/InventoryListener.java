@@ -1,5 +1,6 @@
 package pluginsfix.grindmcancientrace.listener;
 
+import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
@@ -242,10 +243,10 @@ public final class InventoryListener implements Listener {
         if (meta == null) return item;
 
         if (reward.customName() != null && !reward.customName().isEmpty()) {
-            meta.displayName(messages.miniMessage().deserialize(reward.customName()));
+            meta.displayName(messages.parse(reward.customName()).decoration(TextDecoration.ITALIC, false));
         }
         if (reward.lore() != null && !reward.lore().isEmpty()) {
-            meta.lore(reward.lore().stream().map(l -> messages.miniMessage().deserialize(l)).toList());
+            meta.lore(reward.lore().stream().map(l -> messages.parse(l).decoration(TextDecoration.ITALIC, false)).toList());
         }
         if (reward.customModelData() != null) {
             meta.setCustomModelData(reward.customModelData());

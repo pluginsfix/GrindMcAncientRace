@@ -73,10 +73,11 @@ public final class Messages {
     public static String toMiniMessage(String input) {
         if (input == null) return "";
 
-        Matcher matcher = HEX_PATTERN.matcher(input);
+        String normalized = input.replace('§', '&');
+        Matcher matcher = HEX_PATTERN.matcher(normalized);
         StringBuilder sb = new StringBuilder();
         while (matcher.find()) {
-            matcher.appendReplacement(sb, "<#" + matcher.group(1) + ">");
+            matcher.appendReplacement(sb, "<#" + matcher.group(1).toLowerCase() + ">");
         }
         matcher.appendTail(sb);
         String text = sb.toString();
@@ -91,18 +92,18 @@ public final class Messages {
                 .replace("&7", "<gray>")
                 .replace("&8", "<dark_gray>")
                 .replace("&9", "<blue>")
-                .replace("&a", "<green>")
-                .replace("&b", "<aqua>")
-                .replace("&c", "<red>")
-                .replace("&d", "<light_purple>")
-                .replace("&e", "<yellow>")
-                .replace("&f", "<white>")
-                .replace("&l", "<bold>")
-                .replace("&m", "<strikethrough>")
-                .replace("&n", "<underlined>")
-                .replace("&o", "<italic>")
-                .replace("&k", "<obfuscated>")
-                .replace("&r", "<reset>");
+                .replace("&a", "<green>").replace("&A", "<green>")
+                .replace("&b", "<aqua>").replace("&B", "<aqua>")
+                .replace("&c", "<red>").replace("&C", "<red>")
+                .replace("&d", "<light_purple>").replace("&D", "<light_purple>")
+                .replace("&e", "<yellow>").replace("&E", "<yellow>")
+                .replace("&f", "<white>").replace("&F", "<white>")
+                .replace("&l", "<bold>").replace("&L", "<bold>")
+                .replace("&m", "<strikethrough>").replace("&M", "<strikethrough>")
+                .replace("&n", "<underlined>").replace("&N", "<underlined>")
+                .replace("&o", "<italic>").replace("&O", "<italic>")
+                .replace("&k", "<obfuscated>").replace("&K", "<obfuscated>")
+                .replace("&r", "<reset>").replace("&R", "<reset>");
 
         return text;
     }

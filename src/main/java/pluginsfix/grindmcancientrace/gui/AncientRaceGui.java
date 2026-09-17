@@ -1,6 +1,7 @@
 package pluginsfix.grindmcancientrace.gui;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.Bukkit;
@@ -40,7 +41,7 @@ public final class AncientRaceGui {
 
     public void open(Player player, UUID villagerUuid, Profession profession, List<VillagerTrade> trades) {
         String profDisplayName = messages.getRaw("professions." + profession.key());
-        Component title = miniMessage.deserialize(config.guiTitle(), Placeholder.parsed("profession", profDisplayName));
+        Component title = messages.parse(config.guiTitle(), Placeholder.parsed("profession", profDisplayName));
 
         AncientRaceGuiHolder holder = new AncientRaceGuiHolder(villagerUuid, profession, trades);
         Inventory inv = Bukkit.createInventory(holder, config.guiSize(), title);
@@ -76,11 +77,11 @@ public final class AncientRaceGui {
         if (meta == null) return item;
 
         String formattedTime = cooldownRepository.formatCooldown(remainingMillis);
-        meta.displayName(miniMessage.deserialize(config.cooldownName()));
+        meta.displayName(messages.parse(config.cooldownName()).decoration(TextDecoration.ITALIC, false));
 
         List<Component> lore = new ArrayList<>();
         for (String line : config.cooldownLore()) {
-            lore.add(miniMessage.deserialize(line, Placeholder.parsed("time", formattedTime)));
+            lore.add(messages.parse(line, Placeholder.parsed("time", formattedTime)).decoration(TextDecoration.ITALIC, false));
         }
         meta.lore(lore);
         meta.addItemFlags(ItemFlag.HIDE_ADDITIONAL_TOOLTIP, ItemFlag.HIDE_ATTRIBUTES);
@@ -94,7 +95,7 @@ public final class AncientRaceGui {
         ItemStack item = new ItemStack(mat);
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
-            meta.displayName(miniMessage.deserialize(config.fillerName()));
+            meta.displayName(messages.parse(config.fillerName()).decoration(TextDecoration.ITALIC, false));
             meta.addItemFlags(ItemFlag.HIDE_ADDITIONAL_TOOLTIP, ItemFlag.HIDE_ATTRIBUTES);
             item.setItemMeta(meta);
         }
@@ -112,7 +113,7 @@ public final class AncientRaceGui {
 
         String customName = getRewardCustomName(reward);
         if (customName != null && !customName.isEmpty()) {
-            meta.displayName(miniMessage.deserialize(customName));
+            meta.displayName(messages.parse(customName).decoration(TextDecoration.ITALIC, false));
         }
 
         if (reward instanceof TradeReward.ItemReward itemReward) {
@@ -133,12 +134,12 @@ public final class AncientRaceGui {
 
         for (String line : config.loreHeader()) {
             String processed = line.replace("<reward_type>", reward.type().name());
-            finalLore.add(miniMessage.deserialize(processed));
+            finalLore.add(messages.parse(processed).decoration(TextDecoration.ITALIC, false));
         }
 
         List<String> baseLore = getRewardBaseLore(reward);
         for (String line : baseLore) {
-            finalLore.add(miniMessage.deserialize(line));
+            finalLore.add(messages.parse(line).decoration(TextDecoration.ITALIC, false));
         }
 
         if (!baseLore.isEmpty()) {
@@ -147,11 +148,11 @@ public final class AncientRaceGui {
 
         for (String line : config.lorePriceSection()) {
             String processed = line.replace("<price_description>", trade.price().description());
-            finalLore.add(miniMessage.deserialize(processed));
+            finalLore.add(messages.parse(processed).decoration(TextDecoration.ITALIC, false));
         }
 
         for (String line : config.loreStatusSection()) {
-            finalLore.add(miniMessage.deserialize(line));
+            finalLore.add(messages.parse(line).decoration(TextDecoration.ITALIC, false));
         }
 
         meta.lore(finalLore);

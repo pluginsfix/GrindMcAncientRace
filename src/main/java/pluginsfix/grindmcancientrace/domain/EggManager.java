@@ -1,7 +1,7 @@
 package pluginsfix.grindmcancientrace.domain;
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -35,15 +35,14 @@ public final class EggManager {
         ItemMeta meta = item.getItemMeta();
         if (meta == null) return item;
 
-        MiniMessage mm = messages.miniMessage();
         String profName = (profession != null)
                 ? messages.getRaw("professions." + profession.key())
                 : messages.getRaw("professions.random");
 
-        meta.displayName(mm.deserialize(messages.getRaw("egg.name")));
+        meta.displayName(messages.parse(messages.getRaw("egg.name")).decoration(TextDecoration.ITALIC, false));
 
         List<Component> lore = messages.getRawList("egg.lore").stream()
-                .map(line -> mm.deserialize(line, Placeholder.parsed("profession", profName)))
+                .map(line -> messages.parse(line, Placeholder.parsed("profession", profName)).decoration(TextDecoration.ITALIC, false))
                 .toList();
         meta.lore(lore);
 
