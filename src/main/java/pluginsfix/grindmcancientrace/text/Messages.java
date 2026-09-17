@@ -2,6 +2,7 @@ package pluginsfix.grindmcancientrace.text;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -155,6 +156,16 @@ public final class Messages {
         String raw = getRaw(key);
         Component component = parse(raw, resolvers);
         sender.sendMessage(component);
+    }
+
+    public TagResolver tag(String key, String value) {
+        if (value == null) return Placeholder.component(key, Component.empty());
+        return Placeholder.component(key, parse(value));
+    }
+
+    public TagResolver tag(String key, Component value) {
+        if (value == null) return Placeholder.component(key, Component.empty());
+        return Placeholder.component(key, value);
     }
 
     public MiniMessage miniMessage() {

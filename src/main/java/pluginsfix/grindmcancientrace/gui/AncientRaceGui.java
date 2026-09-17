@@ -41,7 +41,7 @@ public final class AncientRaceGui {
 
     public void open(Player player, UUID villagerUuid, Profession profession, List<VillagerTrade> trades) {
         String profDisplayName = messages.getRaw("professions." + profession.key());
-        Component title = messages.parse(config.guiTitle(), Placeholder.parsed("profession", profDisplayName));
+        Component title = messages.parse(config.guiTitle(), messages.tag("profession", profDisplayName));
 
         AncientRaceGuiHolder holder = new AncientRaceGuiHolder(villagerUuid, profession, trades);
         Inventory inv = Bukkit.createInventory(holder, config.guiSize(), title);
@@ -81,7 +81,7 @@ public final class AncientRaceGui {
 
         List<Component> lore = new ArrayList<>();
         for (String line : config.cooldownLore()) {
-            lore.add(messages.parse(line, Placeholder.parsed("time", formattedTime)).decoration(TextDecoration.ITALIC, false));
+            lore.add(messages.parse(line, messages.tag("time", formattedTime)).decoration(TextDecoration.ITALIC, false));
         }
         meta.lore(lore);
         meta.addItemFlags(ItemFlag.HIDE_ADDITIONAL_TOOLTIP, ItemFlag.HIDE_ATTRIBUTES);

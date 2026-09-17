@@ -115,7 +115,7 @@ public final class AncientRaceCommand implements CommandExecutor, TabCompleter {
 
         spawnListener.spawnAncientVillager(player.getLocation(), profession);
         String profDisplayName = messages.getRaw("professions." + profession.key());
-        messages.send(player, "command.spawned", Placeholder.parsed("profession", profDisplayName));
+        messages.send(player, "command.spawned", messages.tag("profession", profDisplayName));
     }
 
     private void handleGive(CommandSender sender, String[] args) {
@@ -167,13 +167,13 @@ public final class AncientRaceCommand implements CommandExecutor, TabCompleter {
                 : messages.getRaw("professions.random");
 
         messages.send(sender, "command.given-egg",
-                Placeholder.parsed("profession", profName),
-                Placeholder.parsed("player", target.getName()),
-                Placeholder.parsed("amount", String.valueOf(amount)));
+                messages.tag("profession", profName),
+                messages.tag("player", target.getName()),
+                messages.tag("amount", String.valueOf(amount)));
 
         messages.send(target, "command.received-egg",
-                Placeholder.parsed("profession", profName),
-                Placeholder.parsed("amount", String.valueOf(amount)));
+                messages.tag("profession", profName),
+                messages.tag("amount", String.valueOf(amount)));
     }
 
     private void handleAddItem(CommandSender sender, String[] args) {
@@ -261,8 +261,8 @@ public final class AncientRaceCommand implements CommandExecutor, TabCompleter {
 
             String profDisplayName = messages.getRaw("professions." + profession.key());
             messages.send(player, "command.item-added",
-                    Placeholder.parsed("profession", profDisplayName),
-                    Placeholder.parsed("id", rewardId));
+                    messages.tag("profession", profDisplayName),
+                    messages.tag("id", rewardId));
         } catch (IOException e) {
             plugin.getLogger().warning("Failed to save config.yml after additem: " + e.getMessage());
         }
@@ -289,7 +289,7 @@ public final class AncientRaceCommand implements CommandExecutor, TabCompleter {
         }
 
         if (count > 0) {
-            messages.send(player, "command.removed", Placeholder.parsed("count", String.valueOf(count)));
+            messages.send(player, "command.removed", messages.tag("count", String.valueOf(count)));
         } else {
             messages.send(player, "command.none-nearby");
         }
@@ -307,7 +307,7 @@ public final class AncientRaceCommand implements CommandExecutor, TabCompleter {
 
     private void sendInvalidProfession(CommandSender sender) {
         String available = String.join(", ", Arrays.stream(Profession.values()).map(Profession::key).toList()) + ", random";
-        messages.send(sender, "command.invalid-profession", Placeholder.parsed("professions", available));
+        messages.send(sender, "command.invalid-profession", messages.tag("professions", available));
     }
 
     @Override

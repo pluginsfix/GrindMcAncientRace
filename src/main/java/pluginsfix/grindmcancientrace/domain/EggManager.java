@@ -42,7 +42,7 @@ public final class EggManager {
         meta.displayName(messages.parse(messages.getRaw("egg.name")).decoration(TextDecoration.ITALIC, false));
 
         List<Component> lore = messages.getRawList("egg.lore").stream()
-                .map(line -> messages.parse(line, Placeholder.parsed("profession", profName)).decoration(TextDecoration.ITALIC, false))
+                .map(line -> messages.parse(line, messages.tag("profession", profName)).decoration(TextDecoration.ITALIC, false))
                 .toList();
         meta.lore(lore);
 

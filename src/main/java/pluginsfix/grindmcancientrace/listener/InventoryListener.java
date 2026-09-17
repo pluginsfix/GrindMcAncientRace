@@ -111,7 +111,7 @@ public final class InventoryListener implements Listener {
         OptionalLong cooldownOpt = cooldownRepository.getCooldownRemaining(player.getUniqueId(), holder.villagerUuid(), tradeIndex, now);
         if (cooldownOpt.isPresent()) {
             String formattedTime = cooldownRepository.formatCooldown(cooldownOpt.getAsLong());
-            messages.send(player, "trade.on-cooldown", Placeholder.parsed("time", formattedTime));
+            messages.send(player, "trade.on-cooldown", messages.tag("time", formattedTime));
             return;
         }
 
@@ -127,7 +127,7 @@ public final class InventoryListener implements Listener {
             Optional<ActiveEffect> existing = effectRepository.getEffect(player.getUniqueId(), effectReward.effectType());
             if (existing.isPresent() && !existing.get().isExpired(System.currentTimeMillis())) {
                 String remaining = existing.get().formatRemainingTime(System.currentTimeMillis());
-                messages.send(player, "trade.already-has-effect", Placeholder.parsed("time", remaining));
+                messages.send(player, "trade.already-has-effect", messages.tag("time", remaining));
                 return;
             }
         }
@@ -218,7 +218,7 @@ public final class InventoryListener implements Listener {
                 );
                 effectRepository.saveEffect(activeEffect);
                 applyPotionEffect(player, activeEffect);
-                messages.send(player, "trade.effect-applied", Placeholder.parsed("effect", effectReward.customName() != null ? effectReward.customName() : effectReward.effectType()));
+                messages.send(player, "trade.effect-applied", messages.tag("effect", effectReward.customName() != null ? effectReward.customName() : effectReward.effectType()));
             }
             case TradeReward.MoneyReward moneyReward -> {
                 vaultHook.getEconomy().ifPresent(eco -> eco.depositPlayer(player, moneyReward.amount()));
@@ -319,24 +319,24 @@ public final class InventoryListener implements Listener {
         switch (price) {
             case PriceRequirement.ItemPrice itemPrice -> {
                 messages.send(player, "trade.not-enough-items",
-                        Placeholder.parsed("item", itemPrice.material()),
-                        Placeholder.parsed("amount", String.valueOf(itemPrice.amount())));
+                        messages.tag("item", itemPrice.material()),
+                        messages.tag("amount", String.valueOf(itemPrice.amount())));
             }
             case PriceRequirement.MoneyPrice moneyPrice -> {
                 messages.send(player, "trade.not-enough-money",
-                        Placeholder.parsed("amount", String.format("%.0f", moneyPrice.amount())));
+                        messages.tag("amount", String.format("%.0f", moneyPrice.amount())));
             }
             case PriceRequirement.DonatePointsPrice pointsPrice -> {
                 messages.send(player, "trade.not-enough-points",
-                        Placeholder.parsed("amount", String.valueOf(pointsPrice.amount())));
+                        messages.tag("amount", String.valueOf(pointsPrice.amount())));
             }
             case PriceRequirement.TaskPrice taskPrice -> {
                 String taskKey = taskPrice.taskType() + ":" + taskPrice.target();
                 int current = taskRepository.getProgress(player.getUniqueId(), taskKey);
                 messages.send(player, "trade.task-not-completed",
-                        Placeholder.parsed("task", taskPrice.description()),
-                        Placeholder.parsed("current", String.valueOf(current)),
-                        Placeholder.parsed("required", String.valueOf(taskPrice.requiredCount())));
+                        messages.tag("task", taskPrice.description()),
+                        messages.tag("current", String.valueOf(current)),
+                        messages.tag("required", String.valueOf(taskPrice.requiredCount())));
             }
         }
     }
