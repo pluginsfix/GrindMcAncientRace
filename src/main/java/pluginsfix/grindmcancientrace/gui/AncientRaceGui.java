@@ -1,0 +1,170 @@
+package pluginsfix.grindmcancientrace.gui;
+
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import pluginsfix.grindmcancientrace.config.PluginConfig;
+import pluginsfix.grindmcancientrace.domain.Profession;
+import pluginsfix.grindmcancientrace.domain.TradeReward;
+import pluginsfix.grindmcancientrace.domain.VillagerTrade;
+import pluginsfix.grindmcancientrace.text.Messages;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+public final class AncientRaceGui {
+    private final PluginConfig config;
+    private final Messages messages;
+    private final MiniMessage miniMessage;
+
+    public AncientRaceGui(PluginConfig config, Messages messages) {
+        this.config = config;
+        this.messages = messages;
+        this.miniMessage = messages.miniMessage();
+    }
+
+    public void open(Player player, UUID villagerUuid, Profession profession, List<VillagerTrade> trades) {
+        String profDisplayName = messages.getRaw("professions." + profession.key());
+        Component title = miniMessage.deserialize(config.guiTitle(), Placeholder.parsed("profession", profDisplayName));
+
+        AncientRaceGuiHolder holder = new AncientRaceGuiHolder(villagerUuid, profession, trades);
+        Inventory inv = Bukkit.createInventory(holder, config.guiSize(), title);
+        holder.setInventory(inv);
+
+        ItemStack filler = createFillerItem();
+        for (int i = 0; i < inv.getSize(); i++) {
+            inv.setItem(i, filler);
+        }
+
+        List<Integer> slots = config.tradeSlots();
+        for (int i = 0; i < trades.size() && i < slots.size(); i++) {
+            VillagerTrade trade = trades.get(i);
+            int slot = slots.get(i);
+            ItemStack tradeItem = buildTradeDisplayItem(trade);
+            inv.setItem(slot, tradeItem);
+        }
+
+        player.openInventory(inv);
+    }
+
+    private ItemStack createFillerItem() {
+        Material mat = Material.matchMaterial(config.fillerMaterial());
+        if (mat == null) mat = Material.BLACK_STAINED_GLASS_PANE;
+        ItemStack item = new ItemStack(mat);
+        ItemMeta meta = item.getItemMeta();
+        if (meta != null) {
+            meta.displayName(miniMessage.deserialize(config.fillerName()));
+            meta.addItemFlags(ItemFlag.HIDE_ADDITIONAL_TOOLTIP, ItemFlag.HIDE_ATTRIBUTES);
+            item.setItemMeta(meta);
+        }
+        return item;
+    }
+
+    private ItemStack buildTradeDisplayItem(VillagerTrade trade) {
+        TradeReward reward = trade.reward();
+        Material mat = getMaterialForReward(reward);
+        int amount = getAmountForReward(reward);
+
+        ItemStack item = new ItemStack(mat, Math.max(1, Math.min(64, amount)));
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null) return item;
+
+        String customName = getRewardCustomName(reward);
+        if (customName != null && !customName.isEmpty()) {
+            meta.displayName(miniMessage.deserialize(customName));
+        }
+
+        if (reward instanceof TradeReward.ItemReward itemReward) {
+            if (itemReward.customModelData() != null) {
+                meta.setCustomModelData(itemReward.customModelData());
+            }
+            if (itemReward.enchants() != null) {
+                for (var entry : itemReward.enchants().entrySet()) {
+                    Enchantment ench = Enchantment.getByName(entry.getKey().toUpperCase());
+                    if (ench != null) {
+                        meta.addEnchant(ench, entry.getValue(), true);
+                    }
+                }
+            }
+        }
+
+        List<Component> finalLore = new ArrayList<>();
+
+        for (String line : config.loreHeader()) {
+            String processed = line.replace("<reward_type>", reward.type().name());
+            finalLore.add(miniMessage.deserialize(processed));
+        }
+
+        List<String> baseLore = getRewardBaseLore(reward);
+        for (String line : baseLore) {
+            finalLore.add(miniMessage.deserialize(line));
+        }
+
+        if (!baseLore.isEmpty()) {
+            finalLore.add(Component.empty());
+        }
+
+        for (String line : config.lorePriceSection()) {
+            String processed = line.replace("<price_description>", trade.price().description());
+            finalLore.add(miniMessage.deserialize(processed));
+        }
+
+        for (String line : config.loreStatusSection()) {
+            finalLore.add(miniMessage.deserialize(line));
+        }
+
+        meta.lore(finalLore);
+        meta.addItemFlags(ItemFlag.HIDE_ADDITIONAL_TOOLTIP, ItemFlag.HIDE_ATTRIBUTES);
+        item.setItemMeta(meta);
+        return item;
+    }
+
+    private Material getMaterialForReward(TradeReward reward) {
+        String matName = switch (reward) {
+            case TradeReward.ItemReward item -> item.material();
+            case TradeReward.EffectReward effect -> effect.iconMaterial();
+            case TradeReward.MoneyReward money -> money.iconMaterial();
+            case TradeReward.DonatePointsReward points -> points.iconMaterial();
+            case TradeReward.CommandReward cmd -> cmd.iconMaterial();
+        };
+
+        Material mat = Material.matchMaterial(matName);
+        return mat != null ? mat : Material.GOLD_INGOT;
+    }
+
+    private int getAmountForReward(TradeReward reward) {
+        if (reward instanceof TradeReward.ItemReward item) {
+            return item.amount();
+        }
+        return 1;
+    }
+
+    private String getRewardCustomName(TradeReward reward) {
+        return switch (reward) {
+            case TradeReward.ItemReward item -> item.customName();
+            case TradeReward.EffectReward effect -> effect.customName();
+            case TradeReward.MoneyReward money -> money.customName();
+            case TradeReward.DonatePointsReward points -> points.customName();
+            case TradeReward.CommandReward cmd -> cmd.customName();
+        };
+    }
+
+    private List<String> getRewardBaseLore(TradeReward reward) {
+        return switch (reward) {
+            case TradeReward.ItemReward item -> item.lore();
+            case TradeReward.EffectReward effect -> effect.lore();
+            case TradeReward.MoneyReward money -> money.lore();
+            case TradeReward.DonatePointsReward points -> points.lore();
+            case TradeReward.CommandReward cmd -> cmd.lore();
+        };
+    }
+}

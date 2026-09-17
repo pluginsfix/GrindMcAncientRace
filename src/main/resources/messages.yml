@@ -1,0 +1,57 @@
+prefix: "<gradient:#FFD700:#FFA500>[Древняя Раса]</gradient> "
+command:
+  no-permission: "<red>У вас недостаточно прав для выполнения этой команды."
+  players-only: "<red>Эта команда доступна только игрокам."
+  usage: "<yellow>Использование: <gold>/ancientrace <spawn|give|reload|remove></gold>"
+  give-usage: "<yellow>Использование: <gold>/ancientrace give <игрок> <профессия|random> [количество]</gold>"
+  spawn-usage: "<yellow>Использование: <gold>/ancientrace spawn <профессия|random></gold>"
+  invalid-profession: "<red>Указана несуществующая профессия! Доступные: <yellow><professions></yellow>"
+  player-not-found: "<red>Игрок не найден в сети."
+  invalid-amount: "<red>Количество должно быть положительным числом."
+  given-egg: "<green>Вы выдали яйцо призыва древнего жителя (<gold><profession></gold>) игроку <yellow><player></yellow> в количестве <gold><amount></gold> шт."
+  received-egg: "<green>Вам выдано яйцо призыва древнего жителя (<gold><profession></gold>) в количестве <gold><amount></gold> шт."
+  spawned: "<green>Житель древней расы профессии <gold><profession></gold> успешно создан!"
+  removed: "<green>Удалено жителей древней расы поблизости: <gold><count></gold>."
+  none-nearby: "<yellow>Поблизости не найдено жителей древней расы."
+  reloaded: "<green>Конфигурация и сообщения успешно перезагружены!"
+
+spawner:
+  blocked: "<red>Яйцо жителя древней расы запрещено использовать на спавнерах!"
+
+trade:
+  success: "<green>Вы успешно совершили обмен с древним жителем!"
+  not-enough-items: "<red>У вас недостаточно предметов для обмена! Требуется: <gold><item></gold> x<gold><amount></gold>."
+  not-enough-money: "<red>У вас недостаточно монет! Требуется: <gold><amount></gold>$."
+  not-enough-points: "<red>У вас недостаточно донат-валюты! Требуется: <gold><amount></gold> очков."
+  task-not-completed: "<red>Вы еще не выполнили необходимое задание: <gold><task></gold> (<yellow><current></yellow>/<gold><required></gold>)."
+  inventory-full: "<red>В вашем инвентаре недостаточно свободного места!"
+  effect-applied: "<green>Вам наложен эффект <gold><effect></gold> сроком на 24 часа!"
+  already-has-effect: "<yellow>У вас уже действует этот эффект! Оставшееся время: <gold><time></gold>."
+
+egg:
+  name: "<gradient:#FFD700:#FFA500>Яйцо Жителя Древней Расы</gradient>"
+  lore:
+    - "<gray>Профессия: <gold><profession></gold>"
+    - ""
+    - "<gray>Призовите могущественного жителя"
+    - "<gray>древней цивилизации с уникальными"
+    - "<gray>товарами и предложениями."
+    - ""
+    - "<red>Запрещено использовать на спавнерах!"
+
+professions:
+  blacksmith: "Кузнец"
+  farmer: "Фермер"
+  warrior: "Боец"
+  miner: "Шахтер"
+  banner_bearer: "Знаменосец"
+  alchemist: "Алхимик"
+  chef: "Повар"
+  weaponsmith: "Оружейник"
+  random: "Случайная"
+
+hologram:
+  line1: "<gradient:#FFD700:#FFA500>Житель древней расы</gradient>"
+  empty: ""
+  line2: "<gray>Это житель очень древней расы."
+  line3: "<gray>Его профессия - <gold><profession></gold>"

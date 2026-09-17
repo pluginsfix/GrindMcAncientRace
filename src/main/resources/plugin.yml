@@ -1,0 +1,17 @@
+name: GrindMcAncientRace
+version: '${project.version}'
+main: pluginsfix.grindmcancientrace.GrindMcAncientRace
+api-version: '1.21'
+author: pluginsfix
+softdepend:
+  - Vault
+  - PlaceholderAPI
+  - FancyHolograms
+  - PlayerPoints
+commands:
+  ancientrace:
+    description: Main command for GrindMcAncientRace
+    permission: grindmcancientrace.use
+    aliases:
+      - ar
+      - ancient
