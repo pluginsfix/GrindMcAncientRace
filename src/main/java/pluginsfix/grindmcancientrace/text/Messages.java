@@ -8,6 +8,10 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -41,6 +45,17 @@ public final class Messages {
         }
 
         YamlConfiguration yaml = YamlConfiguration.loadConfiguration(file);
+        InputStream defaultStream = plugin.getResource("messages.yml");
+        if (defaultStream != null) {
+            YamlConfiguration defaultYaml = YamlConfiguration.loadConfiguration(new InputStreamReader(defaultStream, StandardCharsets.UTF_8));
+            yaml.setDefaults(defaultYaml);
+            yaml.options().copyDefaults(true);
+            try {
+                yaml.save(file);
+            } catch (IOException ignored) {
+            }
+        }
+
         this.prefix = yaml.getString("prefix", "");
 
         for (String key : yaml.getKeys(true)) {

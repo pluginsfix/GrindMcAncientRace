@@ -234,7 +234,13 @@ public final class AncientRaceCommand implements CommandExecutor, TabCompleter {
             if (!meta.getEnchants().isEmpty()) {
                 Map<String, Integer> enchants = new LinkedHashMap<>();
                 for (var entry : meta.getEnchants().entrySet()) {
-                    enchants.put(entry.getKey().getName(), entry.getValue());
+                    String enchName;
+                    try {
+                        enchName = entry.getKey().getKey().getKey().toUpperCase();
+                    } catch (Throwable ignored) {
+                        enchName = entry.getKey().getName();
+                    }
+                    enchants.put(enchName, entry.getValue());
                 }
                 rewardMap.put("enchants", enchants);
             }

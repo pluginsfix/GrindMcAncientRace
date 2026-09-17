@@ -5,6 +5,8 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -119,7 +121,7 @@ public final class AncientRaceGui {
             }
             if (itemReward.enchants() != null) {
                 for (var entry : itemReward.enchants().entrySet()) {
-                    Enchantment ench = Enchantment.getByName(entry.getKey().toUpperCase());
+                    Enchantment ench = resolveEnchantment(entry.getKey());
                     if (ench != null) {
                         meta.addEnchant(ench, entry.getValue(), true);
                     }
@@ -156,6 +158,17 @@ public final class AncientRaceGui {
         meta.addItemFlags(ItemFlag.HIDE_ADDITIONAL_TOOLTIP, ItemFlag.HIDE_ATTRIBUTES);
         item.setItemMeta(meta);
         return item;
+    }
+
+    public static Enchantment resolveEnchantment(String name) {
+        if (name == null || name.isEmpty()) return null;
+        Enchantment ench = Enchantment.getByName(name.toUpperCase());
+        if (ench != null) return ench;
+        try {
+            return Registry.ENCHANTMENT.get(NamespacedKey.minecraft(name.toLowerCase()));
+        } catch (Throwable ignored) {
+            return null;
+        }
     }
 
     private Material getMaterialForReward(TradeReward reward) {

@@ -64,8 +64,8 @@ public final class ConfigParser {
                 String displayName = pSection.getString("display-name", profession.name());
                 String villagerProf = pSection.getString("villager-profession", profession.vanillaProfession());
 
-                List<TradeReward> rewards = parseRewards(pSection.getConfigurationSection("rewards"));
-                List<PriceRequirement> prices = parsePrices(pSection.getConfigurationSection("prices"));
+                List<TradeReward> rewards = parseRewards(pSection);
+                List<PriceRequirement> prices = parsePrices(pSection);
 
                 professions.put(profession, new ProfessionConfig(profession, displayName, villagerProf, rewards, prices));
             }
@@ -98,26 +98,30 @@ public final class ConfigParser {
         );
     }
 
-    private static List<TradeReward> parseRewards(ConfigurationSection section) {
-        if (section == null) return List.of();
+    private static List<TradeReward> parseRewards(ConfigurationSection pSection) {
+        if (pSection == null) return List.of();
         List<TradeReward> rewards = new ArrayList<>();
 
-        for (String key : section.getKeys(false)) {
-            ConfigurationSection itemSec = section.getConfigurationSection(key);
-            if (itemSec != null) {
-                TradeReward reward = parseSingleReward(itemSec);
-                if (reward != null) {
-                    rewards.add(reward);
-                }
-            }
-        }
-
-        List<Map<?, ?>> mapList = section.getParent().getMapList("rewards");
+        List<Map<?, ?>> mapList = pSection.getMapList("rewards");
         if (!mapList.isEmpty()) {
             for (Map<?, ?> map : mapList) {
                 TradeReward reward = parseRewardFromMap(map);
                 if (reward != null) {
                     rewards.add(reward);
+                }
+            }
+            return rewards;
+        }
+
+        ConfigurationSection sec = pSection.getConfigurationSection("rewards");
+        if (sec != null) {
+            for (String key : sec.getKeys(false)) {
+                ConfigurationSection itemSec = sec.getConfigurationSection(key);
+                if (itemSec != null) {
+                    TradeReward reward = parseSingleReward(itemSec);
+                    if (reward != null) {
+                        rewards.add(reward);
+                    }
                 }
             }
         }
@@ -128,13 +132,13 @@ public final class ConfigParser {
     @SuppressWarnings("unchecked")
     private static TradeReward parseRewardFromMap(Map<?, ?> map) {
         String id = String.valueOf(map.get("id"));
-        String type = String.valueOf(map.get("type")).toUpperCase();
+        String type = map.containsKey("type") ? String.valueOf(map.get("type")).toUpperCase() : "ITEM";
         String name = map.containsKey("name") ? String.valueOf(map.get("name")) : null;
         List<String> lore = map.containsKey("lore") ? (List<String>) map.get("lore") : List.of();
 
         return switch (type) {
             case "ITEM" -> {
-                String material = String.valueOf(map.get("material"));
+                String material = map.containsKey("material") ? String.valueOf(map.get("material")) : "STONE";
                 int amount = map.containsKey("amount") ? ((Number) map.get("amount")).intValue() : 1;
                 Map<String, Integer> enchants = new HashMap<>();
                 if (map.containsKey("enchants") && map.get("enchants") instanceof Map<?, ?> enchMap) {
@@ -144,7 +148,7 @@ public final class ConfigParser {
                 yield new TradeReward.ItemReward(id, material, amount, name, lore, enchants, cmd);
             }
             case "EFFECT" -> {
-                String effectType = String.valueOf(map.get("effect-type"));
+                String effectType = map.containsKey("effect-type") ? String.valueOf(map.get("effect-type")) : "SPEED";
                 int amplifier = map.containsKey("amplifier") ? ((Number) map.get("amplifier")).intValue() : 0;
                 long hours = map.containsKey("duration-hours") ? ((Number) map.get("duration-hours")).longValue() : 24L;
                 String material = map.containsKey("material") ? String.valueOf(map.get("material")) : "POTION";
@@ -215,11 +219,11 @@ public final class ConfigParser {
         };
     }
 
-    private static List<PriceRequirement> parsePrices(ConfigurationSection section) {
-        if (section == null) return List.of();
+    private static List<PriceRequirement> parsePrices(ConfigurationSection pSection) {
+        if (pSection == null) return List.of();
         List<PriceRequirement> prices = new ArrayList<>();
 
-        List<Map<?, ?>> mapList = section.getParent().getMapList("prices");
+        List<Map<?, ?>> mapList = pSection.getMapList("prices");
         if (!mapList.isEmpty()) {
             for (Map<?, ?> map : mapList) {
                 PriceRequirement price = parsePriceFromMap(map);
@@ -227,9 +231,13 @@ public final class ConfigParser {
                     prices.add(price);
                 }
             }
-        } else {
-            for (String key : section.getKeys(false)) {
-                ConfigurationSection pSec = section.getConfigurationSection(key);
+            return prices;
+        }
+
+        ConfigurationSection sec = pSection.getConfigurationSection("prices");
+        if (sec != null) {
+            for (String key : sec.getKeys(false)) {
+                ConfigurationSection pSec = sec.getConfigurationSection(key);
                 if (pSec != null) {
                     PriceRequirement price = parseSinglePrice(pSec);
                     if (price != null) {
@@ -244,12 +252,12 @@ public final class ConfigParser {
 
     private static PriceRequirement parsePriceFromMap(Map<?, ?> map) {
         String id = String.valueOf(map.get("id"));
-        String type = String.valueOf(map.get("type")).toUpperCase();
+        String type = map.containsKey("type") ? String.valueOf(map.get("type")).toUpperCase() : "ITEM";
         String description = map.containsKey("description") ? String.valueOf(map.get("description")) : id;
 
         return switch (type) {
             case "ITEM" -> {
-                String material = String.valueOf(map.get("material"));
+                String material = map.containsKey("material") ? String.valueOf(map.get("material")) : "STONE";
                 int amount = map.containsKey("amount") ? ((Number) map.get("amount")).intValue() : 1;
                 Integer cmd = map.containsKey("custom-model-data") ? ((Number) map.get("custom-model-data")).intValue() : null;
                 yield new PriceRequirement.ItemPrice(id, material, amount, cmd, description);

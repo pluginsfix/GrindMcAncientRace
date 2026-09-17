@@ -252,7 +252,7 @@ public final class InventoryListener implements Listener {
         }
         if (reward.enchants() != null) {
             for (var entry : reward.enchants().entrySet()) {
-                Enchantment ench = Enchantment.getByName(entry.getKey().toUpperCase());
+                Enchantment ench = AncientRaceGui.resolveEnchantment(entry.getKey());
                 if (ench != null) {
                     meta.addEnchant(ench, entry.getValue(), true);
                 }
