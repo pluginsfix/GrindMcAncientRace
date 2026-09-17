@@ -1,4 +1,4 @@
-config-version: 2
+config-version: 3
 
 spawn-chance-percent: 2.5
 trade-cooldown-minutes: 60
@@ -11,19 +11,19 @@ hologram:
   line-spacing: true
 
 gui:
-  title: "<gradient:#FFD700:#FFA500>Древний Обмен | <profession></gradient>"
+  title: "&#FF7A45&lДревний Обмен &7| &#8BEAFF<profession>"
   size: 54
   filler-item:
     material: "BLACK_STAINED_GLASS_PANE"
     name: " "
   cooldown-item:
     material: "BARRIER"
-    name: "<gradient:#FF0000:#FFAA00>Товар на перезарядке</gradient>"
+    name: "&#FF422E&lТовар на перезарядке"
     lore:
-      - "<gray>Вы уже приобрели этот товар.</gray>"
+      - "&7Особенности:"
+      - "&f- Вы уже совершили этот &#FF422Eобмен&7."
       - ""
-      - "<yellow>Следующий обмен доступен через:</yellow>"
-      - "<gold>⌛ <time></gold>"
+      - "&#FF422E&l▶ &fСледующий обмен через&7: &#FF422E<time>&7."
   trade-slots:
     - 10
     - 12
@@ -35,16 +35,14 @@ gui:
     - 34
   lore-format:
     header:
-      - "<dark_gray>━━━━━━━━━━━━━━━━━━━━━</dark_gray>"
-      - "<gray>Тип награды: <yellow><reward_type></yellow>"
-      - ""
+      - "&7Особенности:"
     price-section:
-      - "<gold>Требование для обмена:</gold>"
-      - "<gray>• <price_description>"
+      - ""
+      - "&7Стоимость обмена:"
+      - "&f- <price_description>"
       - ""
     status-section:
-      - "<dark_gray>━━━━━━━━━━━━━━━━━━━━━</dark_gray>"
-      - "<yellow>▶ Нажмите для совершения обмена</yellow>"
+      - "&#FF7A45&l▶ &fНажмите для совершения обмена&7."
 
 database:
   file-name: "data.db"
@@ -62,10 +60,10 @@ professions:
         type: "ITEM"
         material: "NETHERITE_CHESTPLATE"
         amount: 1
-        name: "<gradient:#FF5555:#FFAA00>Древний Нагрудник Титана</gradient>"
+        name: "&#FF7A45Древний Нагрудник Титана"
         lore:
-          - "<gray>Выкован древнейшими мастерами."
-          - "<aqua>Защита V, Прочность IV, Шипы III</aqua>"
+          - "&f- Выкован величайшими мастерами &#FF7A45древней кузницы&7."
+          - "&f- Обладает чарами &#8BEAFFЗащита V&7, &#8BEAFFПрочность IV&7, &#8BEAFFШипы III&7."
         enchants:
           PROTECTION: 5
           UNBREAKING: 4
@@ -74,10 +72,10 @@ professions:
         type: "ITEM"
         material: "NETHERITE_SWORD"
         amount: 1
-        name: "<gradient:#FF5555:#FFAA00>Клинок Первородного Пламени</gradient>"
+        name: "&#FF422EКлинок Первородного Пламени"
         lore:
-          - "<gray>Пылает неугасимым огнем предков."
-          - "<aqua>Острота VI, Заговор огня III, Добыча III</aqua>"
+          - "&f- Пылает неугасимым огнем &#FF422Eдревних титанов&7."
+          - "&f- Обладает чарами &#8BEAFFОстрота VI&7, &#8BEAFFЗаговор огня III&7."
         enchants:
           SHARPNESS: 6
           FIRE_ASPECT: 3
@@ -88,37 +86,37 @@ professions:
         amplifier: 1
         duration-hours: 24
         material: "POTION"
-        name: "<gradient:#55FFFF:#55FF55>Благословение Стойкости (24ч)</gradient>"
+        name: "&#8BEAFFБлагословение Стойкости"
         lore:
-          - "<gray>Дарует эффект <aqua>Сопротивление II</aqua> на 24 часа."
+          - "&f- Дарует эффект &#8BEAFFСопротивление II &fна &#8BEAFF24 часа&7."
       - id: "netherite_upgrade_smithing_template"
         type: "ITEM"
         material: "NETHERITE_UPGRADE_SMITHING_TEMPLATE"
         amount: 3
-        name: "<gold>Древний кузнечный шаблон</gold>"
+        name: "&#9ED5FFДревний Кузнечный Шаблон"
         lore:
-          - "<gray>Редчайший образец древнего кузнечества."
+          - "&f- Редчайший образец древнего &#9ED5FFкузнечества&7."
       - id: "vault_coins_large"
         type: "MONEY"
         amount: 50000
         material: "GOLD_BLOCK"
-        name: "<gold>Сундук с монетами ($50,000)</gold>"
+        name: "&#FFD700Сундук с Монетами"
         lore:
-          - "<gray>Награда в игровой валюте."
+          - "&f- Награда в размере &#8BEAFF50,000$ монет&7."
       - id: "player_points_reward"
         type: "DONATE_POINTS"
         amount: 100
         material: "NETHER_STAR"
-        name: "<light_purple>Кристалл Донат-Валюты (100 PO)</light_purple>"
+        name: "&#DDA0DDКристалл Донат-Валюты"
         lore:
-          - "<gray>Начисление донат-валюты на баланс."
+          - "&f- Начисляет &#8BEAFF100 донат-очков &fна ваш баланс&7."
       - id: "unbreaking_pickaxe"
         type: "ITEM"
         material: "NETHERITE_PICKAXE"
         amount: 1
-        name: "<gradient:#00FFAA:#00AAFF>Крушитель Тверди</gradient>"
+        name: "&#00FFAAКрушитель Тверди"
         lore:
-          - "<aqua>Эффективность VI, Прочность V, Удача III</aqua>"
+          - "&f- Пробивает любые породы с чарами &#8BEAFFЭффективность VI&7."
         enchants:
           EFFICIENCY: 6
           UNBREAKING: 5
@@ -127,67 +125,67 @@ professions:
         type: "ITEM"
         material: "TOTEM_OF_UNDYING"
         amount: 2
-        name: "<gold>Древний Тотем Бессмертия</gold>"
+        name: "&#FF7A45Священный Тотем Бессмертия"
         lore:
-          - "<gray>Освященный тотем великих предков."
+          - "&f- Освященный тотем &#FF7A45древних правителей&7."
       - id: "ancient_anvil"
         type: "ITEM"
         material: "ANVIL"
         amount: 5
-        name: "<gray>Закаленная древняя наковальня</gray>"
+        name: "&#9ED5FFЗакаленная Древняя Наковальня"
         lore:
-          - "<gray>Чрезвычайно прочная наковальня."
+          - "&f- Чрезвычайно прочная &#9ED5FFнаковальня&7."
     prices:
       - id: "diamonds_stack"
         type: "ITEM"
         material: "DIAMOND"
         amount: 32
-        description: "<aqua>32 шт. Алмазов</aqua>"
+        description: "&#8BEAFF32 шт. Алмазов&7."
       - id: "netherite_ingot"
         type: "ITEM"
         material: "NETHERITE_INGOT"
         amount: 4
-        description: "<dark_gray>4 шт. Незеритовых слитков</dark_gray>"
+        description: "&#8BEAFF4 шт. Незеритовых слитков&7."
       - id: "obsidian_stack"
         type: "ITEM"
         material: "OBSIDIAN"
         amount: 64
-        description: "<dark_purple>64 шт. Обсидиана</dark_purple>"
+        description: "&#8BEAFF64 шт. Обсидиана&7."
       - id: "raw_iron_stack"
         type: "ITEM"
         material: "RAW_IRON"
         amount: 128
-        description: "<gold>128 шт. Рудного железа</gold>"
+        description: "&#8BEAFF128 шт. Рудного железа&7."
       - id: "vault_price_25k"
         type: "MONEY"
         amount: 25000
-        description: "<gold>25,000$ монет</gold>"
+        description: "&#8BEAFF25,000$ монет&7."
       - id: "donate_price_50"
         type: "DONATE_POINTS"
         amount: 50
-        description: "<light_purple>50 донат-очков</light_purple>"
+        description: "&#8BEAFF50 донат-очков&7."
       - id: "kill_blazes_task"
         type: "TASK"
         task-type: "KILL_MOB"
         target: "BLAZE"
         required-count: 30
-        description: "<yellow>Убить 30 Ифритов</yellow>"
+        description: "&fУбить &#8BEAFF30 Ифритов&7."
       - id: "mine_ancient_debris"
         type: "TASK"
         task-type: "MINE_BLOCK"
         target: "ANCIENT_DEBRIS"
         required-count: 8
-        description: "<dark_red>Добыть 8 древних обломков</dark_red>"
+        description: "&fДобыть &#8BEAFF8 древних обломков&7."
       - id: "crying_obsidian_stack"
         type: "ITEM"
         material: "CRYING_OBSIDIAN"
         amount: 32
-        description: "<light_purple>32 шт. Плачущего обсидиана</light_purple>"
+        description: "&#8BEAFF32 шт. Плачущего обсидиана&7."
       - id: "emerald_blocks"
         type: "ITEM"
         material: "EMERALD_BLOCK"
         amount: 16
-        description: "<green>16 шт. Изумрудных блоков</green>"
+        description: "&#8BEAFF16 шт. Изумрудных блоков&7."
 
   farmer:
     display-name: "Фермер"
@@ -197,25 +195,25 @@ professions:
         type: "ITEM"
         material: "ENCHANTED_GOLDEN_APPLE"
         amount: 4
-        name: "<gold>Зачарованное Золотое Яблоко Древних</gold>"
+        name: "&#FFD700Золотое Яблоко Древа Жизни"
         lore:
-          - "<gray>Плод великого древа жизни."
+          - "&f- Плод священного древа &#FFD700древних богов&7."
       - id: "effect_regeneration_24h"
         type: "EFFECT"
         effect-type: "REGENERATION"
         amplifier: 1
         duration-hours: 24
         material: "POTION"
-        name: "<gradient:#FF55AA:#FFAAFF>Дар Плодородия и Регенерации (24ч)</gradient>"
+        name: "&#FF7A45Благословение Плодородия"
         lore:
-          - "<gray>Дарует <pink>Регенерацию II</pink> на 24 часа."
+          - "&f- Дарует эффект &#FF7A45Регенерация II &fна &#8BEAFF24 часа&7."
       - id: "ancient_hoe"
         type: "ITEM"
         material: "NETHERITE_HOE"
         amount: 1
-        name: "<gradient:#55FF55:#AAFFAA>Коса Изобилия</gradient>"
+        name: "&#55FF55Коса Великого Изобилия"
         lore:
-          - "<aqua>Прочность V, Удача IV, Починка</aqua>"
+          - "&f- Обладает чарами &#8BEAFFПрочность V&7, &#8BEAFFУдача IV&7, &#8BEAFFПочинка&7."
         enchants:
           UNBREAKING: 5
           FORTUNE: 4
@@ -224,95 +222,95 @@ professions:
         type: "ITEM"
         material: "GOLDEN_CARROT"
         amount: 128
-        name: "<gold>Священная золотая морковь</gold>"
+        name: "&#FFD700Священная Золотая Морковь"
         lore:
-          - "<gray>Питает душу и восстанавливает сытость мгновенно."
+          - "&f- Мгновенно восстанавливает сытость и &#FFD700здоровье&7."
       - id: "player_points_farmer"
         type: "DONATE_POINTS"
         amount: 150
         material: "NETHER_STAR"
-        name: "<light_purple>Семена Богатства (150 PO)</light_purple>"
+        name: "&#DDA0DDСемена Процветания"
         lore:
-          - "<gray>Донат-валюта за плоды урожая."
+          - "&f- Начисляет &#8BEAFF150 донат-очков &fна ваш баланс&7."
       - id: "vault_farmer_money"
         type: "MONEY"
         amount: 40000
         material: "EMERALD"
-        name: "<green>Выручка с ярмарки ($40,000)</green>"
+        name: "&#55FF55Выручка с Ярмарки"
         lore:
-          - "<gray>Монеты за поставку урожая."
+          - "&f- Награда в размере &#8BEAFF40,000$ монет&7."
       - id: "sniffer_egg"
         type: "ITEM"
         material: "SNIFFER_EGG"
         amount: 2
-        name: "<dark_green>Яйцо Нюхача</dark_green>"
+        name: "&#9ED5FFЯйцо Древнего Нюхача"
         lore:
-          - "<gray>Древнее создание для поиска семян."
+          - "&f- Позволяет вырастить &#9ED5FFдревнего нюхача&7."
       - id: "hay_block_bundle"
         type: "ITEM"
         material: "HAY_BLOCK"
         amount: 64
-        name: "<yellow>Сноп Золотистой Пшеницы</yellow>"
+        name: "&#FFD700Сноп Золотистой Пшеницы"
         lore:
-          - "<gray>Собран на древнейших полях."
+          - "&f- Собран на древнейших &#FFD700полях изобилия&7."
       - id: "honey_bottle_pack"
         type: "ITEM"
         material: "HONEY_BOTTLE"
         amount: 16
-        name: "<gold>Древний янтарный мед</gold>"
+        name: "&#FF7A45Древний Янтарный Мед"
         lore:
-          - "<gray>Снимает все яды."
+          - "&f- Снимает все негативные &#FF7A45эффекты и яды&7."
     prices:
       - id: "wheat_large_stack"
         type: "ITEM"
         material: "WHEAT"
         amount: 256
-        description: "<yellow>256 шт. Пшеницы</yellow>"
+        description: "&#8BEAFF256 шт. Пшеницы&7."
       - id: "golden_apple_price"
         type: "ITEM"
         material: "GOLDEN_APPLE"
         amount: 16
-        description: "<gold>16 шт. Золотых яблок</gold>"
+        description: "&#8BEAFF16 шт. Золотых яблок&7."
       - id: "pumpkin_stack"
         type: "ITEM"
         material: "PUMPKIN"
         amount: 128
-        description: "<gold>128 шт. Тыкв</gold>"
+        description: "&#8BEAFF128 шт. Тыкв&7."
       - id: "carrot_large_stack"
         type: "ITEM"
         material: "CARROT"
         amount: 256
-        description: "<gold>256 шт. Моркови</gold>"
+        description: "&#8BEAFF256 шт. Моркови&7."
       - id: "vault_price_15k"
         type: "MONEY"
         amount: 15000
-        description: "<gold>15,000$ монет</gold>"
+        description: "&#8BEAFF15,000$ монет&7."
       - id: "donate_price_40"
         type: "DONATE_POINTS"
         amount: 40
-        description: "<light_purple>40 донат-очков</light_purple>"
+        description: "&#8BEAFF40 донат-очков&7."
       - id: "harvest_crops_task"
         type: "TASK"
         task-type: "MINE_BLOCK"
         target: "WHEAT"
         required-count: 100
-        description: "<green>Собрать 100 пшеницы</green>"
+        description: "&fСобрать &#8BEAFF100 пшеницы&7."
       - id: "kill_zombies_farmer"
         type: "TASK"
         task-type: "KILL_MOB"
         target: "ZOMBIE"
         required-count: 40
-        description: "<red>Уничтожить 40 Зомби-вредителей</red>"
+        description: "&fУничтожить &#8BEAFF40 Зомби-вредителей&7."
       - id: "potato_stack"
         type: "ITEM"
         material: "POTATO"
         amount: 256
-        description: "<gold>256 шт. Картофеля</gold>"
+        description: "&#8BEAFF256 шт. Картофеля&7."
       - id: "honeycomb_stack"
         type: "ITEM"
         material: "HONEYCOMB"
         amount: 64
-        description: "<yellow>64 шт. Пчелиных сот</yellow>"
+        description: "&#8BEAFF64 шт. Пчелиных сот&7."
 
   warrior:
     display-name: "Боец"
@@ -322,10 +320,10 @@ professions:
         type: "ITEM"
         material: "NETHERITE_HELMET"
         amount: 1
-        name: "<gradient:#FF0000:#880000>Шлем Непобедимого Гладиатора</gradient>"
+        name: "&#FF422EШлем Непобедимого Гладиатора"
         lore:
-          - "<gray>Защищает от любых смертоносных ударов."
-          - "<aqua>Защита V, Подводное дыхание III, Прочность IV</aqua>"
+          - "&f- Защищает от смертельных ударов &#FF422Eпротивника&7."
+          - "&f- Обладает чарами &#8BEAFFЗащита V&7, &#8BEAFFПодводное дыхание III&7."
         enchants:
           PROTECTION: 5
           RESPIRATION: 3
@@ -336,16 +334,16 @@ professions:
         amplifier: 1
         duration-hours: 24
         material: "POTION"
-        name: "<gradient:#FF0000:#FFAA00>Ярость Древнего Воина (24ч)</gradient>"
+        name: "&#FF422EЯрость Древнего Воина"
         lore:
-          - "<gray>Дарует <red>Силу II</red> на 24 часа."
+          - "&f- Дарует эффект &#FF422EСила II &fна &#8BEAFF24 часа&7."
       - id: "ancient_bow"
         type: "ITEM"
         material: "BOW"
         amount: 1
-        name: "<gradient:#FFAA00:#FF5555>Лук Небесного Грома</gradient>"
+        name: "&#FF7A45Лук Небесного Грома"
         lore:
-          - "<aqua>Сила VI, Огонь I, Бесконечность I</aqua>"
+          - "&f- Обладает чарами &#8BEAFFСила VI&7, &#8BEAFFОгонь I&7, &#8BEAFFБесконечность&7."
         enchants:
           POWER: 6
           FLAME: 1
@@ -355,10 +353,9 @@ professions:
         type: "ITEM"
         material: "MACE"
         amount: 1
-        name: "<gradient:#990000:#FF3333>Молот Первозданного Разрушения</gradient>"
+        name: "&#FF422EМолот Первозданного Разрушения"
         lore:
-          - "<gray>Сокрушает броню с огромной высоты."
-          - "<aqua>Плотность V, Ветровой заряд III, Прочность III</aqua>"
+          - "&f- Сокрушает броню с высоты благодаря &#FF422EПлотности V&7."
         enchants:
           DENSITY: 5
           WIND_BURST: 3
@@ -367,81 +364,81 @@ professions:
         type: "MONEY"
         amount: 60000
         material: "DIAMOND"
-        name: "<gold>Награда за трофеи ($60,000)</gold>"
+        name: "&#FFD700Воинская Награда"
         lore:
-          - "<gray>Оплата за уничтожение опасных чудовищ."
+          - "&f- Награда в размере &#8BEAFF60,000$ монет&7."
       - id: "player_points_warrior"
         type: "DONATE_POINTS"
         amount: 200
         material: "NETHER_STAR"
-        name: "<light_purple>Орден Славы (200 PO)</light_purple>"
+        name: "&#DDA0DDОрден Славы"
         lore:
-          - "<gray>Донат-валюта за воинские подвиги."
+          - "&f- Начисляет &#8BEAFF200 донат-очков &fна ваш баланс&7."
       - id: "heavy_core"
         type: "ITEM"
         material: "HEAVY_CORE"
         amount: 1
-        name: "<dark_gray>Тяжелое ядро древних</dark_gray>"
+        name: "&#9ED5FFТяжелое Ядро Древних"
         lore:
-          - "<gray>Редчайший компонент булавы."
+          - "&f- Редчайший компонент для &#9ED5FFбулавы&7."
       - id: "wind_charge_pack"
         type: "ITEM"
         material: "WIND_CHARGE"
         amount: 32
-        name: "<aqua>Ветровые заряды Близа</aqua>"
+        name: "&#8BEAFFВетровые Заряды Бриза"
         lore:
-          - "<gray>Оружие древних воинов ветра."
+          - "&f- Оружие древнейших &#8BEAFFвоинов ветра&7."
     prices:
       - id: "wither_skeleton_skull_price"
         type: "ITEM"
         material: "WITHER_SKELETON_SKULL"
         amount: 3
-        description: "<dark_gray>3 шт. Черепа визер-скелета</dark_gray>"
+        description: "&#8BEAFF3 шт. Черепа визер-скелета&7."
       - id: "nether_star_price"
         type: "ITEM"
         material: "NETHER_STAR"
         amount: 1
-        description: "<light_purple>1 шт. Звезда Незера</light_purple>"
+        description: "&#8BEAFF1 шт. Звезда Незера&7."
       - id: "ghast_tear_stack"
         type: "ITEM"
         material: "GHAST_TEAR"
         amount: 16
-        description: "<white>16 шт. Слёз гаста</white>"
+        description: "&#8BEAFF16 шт. Слёз гаста&7."
       - id: "breeze_rod_stack"
         type: "ITEM"
         material: "BREEZE_ROD"
         amount: 16
-        description: "<aqua>16 шт. Стержней бриза</aqua>"
+        description: "&#8BEAFF16 шт. Стержней бриза&7."
       - id: "vault_price_35k"
         type: "MONEY"
         amount: 35000
-        description: "<gold>35,000$ монет</gold>"
+        description: "&#8BEAFF35,000$ монет&7."
       - id: "donate_price_75"
         type: "DONATE_POINTS"
         amount: 75
-        description: "<light_purple>75 донат-очков</light_purple>"
+        description: "&#8BEAFF75 донат-очков&7."
       - id: "kill_withers_task"
         type: "TASK"
         task-type: "KILL_MOB"
         target: "WITHER_SKELETON"
         required-count: 25
-        description: "<dark_gray>Убить 25 Визер-скелетов</dark_gray>"
+        description: "&fУбить &#8BEAFF25 Визер-скелетов&7."
       - id: "kill_warden_task"
         type: "TASK"
         task-type: "KILL_MOB"
         target: "WARDEN"
         required-count: 1
-        description: "<dark_blue>Победить 1 Вардена</dark_blue>"
+        description: "&fПобедить &#8BEAFF1 Вардена&7."
       - id: "dragon_breath_stack"
         type: "ITEM"
         material: "DRAGON_BREATH"
         amount: 8
-        description: "<light_purple>8 шт. Оседающего дыхания дракона</light_purple>"
+        description: "&#8BEAFF8 шт. Дыхания дракона&7."
       - id: "ender_pearl_stack"
         type: "ITEM"
         material: "ENDER_PEARL"
         amount: 64
-        description: "<dark_aqua>64 шт. Жемчуга Края</dark_aqua>"
+        description: "&#8BEAFF64 шт. Жемчуга Края&7."
 
   miner:
     display-name: "Шахтер"
@@ -451,10 +448,9 @@ professions:
         type: "ITEM"
         material: "NETHERITE_PICKAXE"
         amount: 1
-        name: "<gradient:#00AAFF:#00FFAA>Бур Древнейших Глубин</gradient>"
+        name: "&#8BEAFFБур Древнейших Глубин"
         lore:
-          - "<gray>Пробивает породу с невиданной скоростью."
-          - "<aqua>Эффективность VII, Прочность V, Шелковое касание</aqua>"
+          - "&f- Обладает чарами &#8BEAFFЭффективность VII&7, &#8BEAFFШелковое касание&7."
         enchants:
           EFFICIENCY: 7
           UNBREAKING: 5
@@ -465,102 +461,102 @@ professions:
         amplifier: 1
         duration-hours: 24
         material: "POTION"
-        name: "<gradient:#FFAA00:#FFFF55>Спешка Недр (24ч)</gradient>"
+        name: "&#FFD700Спешка Недр"
         lore:
-          - "<gray>Дарует эффект <gold>Спешка II</gold> на 24 часа."
+          - "&f- Дарует эффект &#FFD700Спешка II &fна &#8BEAFF24 часа&7."
       - id: "ancient_debris_bundle"
         type: "ITEM"
         material: "ANCIENT_DEBRIS"
         amount: 12
-        name: "<dark_red>Связка Древних Обломков</dark_red>"
+        name: "&#FF7A45Связка Древних Обломков"
         lore:
-          - "<gray>Чистейшая древняя руда."
+          - "&f- Чистейшая древняя руда &#FF7A45недр&7."
       - id: "diamond_block_bundle"
         type: "ITEM"
         material: "DIAMOND_BLOCK"
         amount: 8
-        name: "<aqua>Блоки Чистейших Алмазов</aqua>"
+        name: "&#8BEAFFБлоки Чистейших Алмазов"
         lore:
-          - "<gray>Добыты в забытых жилах."
+          - "&f- Добыты в древнейших &#8BEAFFалмазных жилах&7."
       - id: "vault_miner_gold"
         type: "MONEY"
         amount: 45000
         material: "RAW_GOLD_BLOCK"
-        name: "<gold>Золотой Запас Шахтеров ($45,000)</gold>"
+        name: "&#FFD700Золотой Запас Шахтеров"
         lore:
-          - "<gray>Денежная награда за руду."
+          - "&f- Награда в размере &#8BEAFF45,000$ монет&7."
       - id: "player_points_miner"
         type: "DONATE_POINTS"
         amount: 120
         material: "NETHER_STAR"
-        name: "<light_purple>Самоцвет Глубин (120 PO)</light_purple>"
+        name: "&#DDA0DDСамоцвет Глубин"
         lore:
-          - "<gray>Донат-валюта за подземные находки."
+          - "&f- Начисляет &#8BEAFF120 донат-очков &fна ваш баланс&7."
       - id: "heart_of_the_sea"
         type: "ITEM"
         material: "HEART_OF_THE_SEA"
         amount: 1
-        name: "<blue>Сердце Моря</blue>"
+        name: "&#8BEAFFСердце Моря"
         lore:
-          - "<gray>Древний артефакт морских глубин."
+          - "&f- Древний артефакт &#8BEAFFморских глубин&7."
       - id: "amethyst_cluster_pack"
         type: "ITEM"
         material: "AMETHYST_CLUSTER"
         amount: 32
-        name: "<light_purple>Сияющие гроздья аметиста</light_purple>"
+        name: "&#DDA0DDСияющие Гроздья Аметиста"
         lore:
-          - "<gray>Звенящие кристаллы пещер."
+          - "&f- Звенящие кристаллы &#DDA0DDподземных пещер&7."
     prices:
       - id: "deepslate_stack"
         type: "ITEM"
         material: "DEEPSLATE"
         amount: 256
-        description: "<dark_gray>256 шт. Глубинного сланца</dark_gray>"
+        description: "&#8BEAFF256 шт. Глубинного сланца&7."
       - id: "raw_copper_stack"
         type: "ITEM"
         material: "RAW_COPPER"
         amount: 128
-        description: "<gold>128 шт. Рудной меди</gold>"
+        description: "&#8BEAFF128 шт. Рудной меди&7."
       - id: "redstone_block_stack"
         type: "ITEM"
         material: "REDSTONE_BLOCK"
         amount: 32
-        description: "<red>32 шт. Редстоун блоков</red>"
+        description: "&#8BEAFF32 шт. Редстоун блоков&7."
       - id: "lapis_block_stack"
         type: "ITEM"
         material: "LAPIS_BLOCK"
         amount: 32
-        description: "<blue>32 шт. Лазуритовых блоков</blue>"
+        description: "&#8BEAFF32 шт. Лазуритовых блоков&7."
       - id: "vault_price_20k"
         type: "MONEY"
         amount: 20000
-        description: "<gold>20,000$ монет</gold>"
+        description: "&#8BEAFF20,000$ монет&7."
       - id: "donate_price_45"
         type: "DONATE_POINTS"
         amount: 45
-        description: "<light_purple>45 донат-очков</light_purple>"
+        description: "&#8BEAFF45 донат-очков&7."
       - id: "mine_diamond_ore_task"
         type: "TASK"
         task-type: "MINE_BLOCK"
         target: "DEEPSLATE_DIAMOND_ORE"
         required-count: 20
-        description: "<aqua>Добыть 20 глубоких алмазных руд</aqua>"
+        description: "&fДобыть &#8BEAFF20 глубоких алмазных руд&7."
       - id: "mine_obsidian_task"
         type: "TASK"
         task-type: "MINE_BLOCK"
         target: "OBSIDIAN"
         required-count: 32
-        description: "<dark_purple>Добыть 32 блока обсидиана</dark_purple>"
+        description: "&fДобыть &#8BEAFF32 блока обсидиана&7."
       - id: "coal_block_stack"
         type: "ITEM"
         material: "COAL_BLOCK"
         amount: 64
-        description: "<black>64 шт. Угольных блоков</black>"
+        description: "&#8BEAFF64 шт. Угольных блоков&7."
       - id: "gold_block_stack"
         type: "ITEM"
         material: "GOLD_BLOCK"
         amount: 16
-        description: "<yellow>16 шт. Золотых блоков</yellow>"
+        description: "&#8BEAFF16 шт. Золотых блоков&7."
 
   banner_bearer:
     display-name: "Знаменосец"
@@ -570,32 +566,32 @@ professions:
         type: "ITEM"
         material: "OMINOUS_BOTTLE"
         amount: 3
-        name: "<gradient:#FF0055:#5500FF>Зловещий Эликсир Испытаний V</gradient>"
+        name: "&#FF422EЗловещий Эликсир Испытаний V"
         lore:
-          - "<gray>Призывает великие рейды и испытания предков."
+          - "&f- Призывает великие рейды &#FF422Eиспытаний предков&7."
       - id: "effect_speed_24h"
         type: "EFFECT"
         effect-type: "SPEED"
         amplifier: 1
         duration-hours: 24
         material: "POTION"
-        name: "<gradient:#55FFFF:#FFFFFF>Поступь Авангарда (24ч)</gradient>"
+        name: "&#8BEAFFПоступь Авангарда"
         lore:
-          - "<gray>Дарует <aqua>Скорость II</aqua> на 24 часа."
+          - "&f- Дарует эффект &#8BEAFFСкорость II &fна &#8BEAFF24 часа&7."
       - id: "ominous_trial_key"
         type: "ITEM"
         material: "OMINOUS_TRIAL_KEY"
         amount: 4
-        name: "<gradient:#FF0055:#FFAA00>Зловещий Ключ Испытаний</gradient>"
+        name: "&#FF7A45Зловещий Ключ Испытаний"
         lore:
-          - "<gray>Открывает хранилища в камерах испытаний."
+          - "&f- Открывает древнейшие &#FF7A45хранилища испытаний&7."
       - id: "ancient_shield"
         type: "ITEM"
         material: "SHIELD"
         amount: 1
-        name: "<gradient:#FFD700:#FFFFFF>Щит Несокрушимой Чести</gradient>"
+        name: "&#FFD700Щит Несокрушимой Чести"
         lore:
-          - "<aqua>Прочность V, Починка</aqua>"
+          - "&f- Обладает чарами &#8BEAFFПрочность V&7, &#8BEAFFПочинка&7."
         enchants:
           UNBREAKING: 5
           MENDING: 1
@@ -603,23 +599,23 @@ professions:
         type: "MONEY"
         amount: 55000
         material: "GOLDEN_APPLE"
-        name: "<gold>Казна Легиона ($55,000)</gold>"
+        name: "&#FFD700Казна Легиона"
         lore:
-          - "<gray>Плата за доблесть знамени."
+          - "&f- Награда в размере &#8BEAFF55,000$ монет&7."
       - id: "player_points_banner"
         type: "DONATE_POINTS"
         amount: 180
         material: "NETHER_STAR"
-        name: "<light_purple>Шеврон Героя (180 PO)</light_purple>"
+        name: "&#DDA0DDШеврон Героя"
         lore:
-          - "<gray>Донат-валюта за воинскую честь."
+          - "&f- Начисляет &#8BEAFF180 донат-очков &fна ваш баланс&7."
       - id: "elytra"
         type: "ITEM"
         material: "ELYTRA"
         amount: 1
-        name: "<gradient:#55FFFF:#AA00AA>Крылья Древнего Небожителя</gradient>"
+        name: "&#8BEAFFКрылья Древнего Небожителя"
         lore:
-          - "<aqua>Прочность IV, Починка</aqua>"
+          - "&f- Позволяют парить в небесах с чарами &#8BEAFFПрочность IV&7."
         enchants:
           UNBREAKING: 4
           MENDING: 1
@@ -627,60 +623,60 @@ professions:
         type: "ITEM"
         material: "FIREWORK_ROCKET"
         amount: 128
-        name: "<yellow>Салютные ракеты полета</yellow>"
+        name: "&#FF7A45Салютные Ракеты Полета"
         lore:
-          - "<gray>Длительный полет 3 уровня."
+          - "&f- Обеспечивают длительный полет &#FF7A453 уровня&7."
     prices:
       - id: "ominous_banner_price"
         type: "ITEM"
         material: "WHITE_BANNER"
         amount: 8
-        description: "<white>8 шт. Белых флагов</white>"
+        description: "&#8BEAFF8 шт. Белых флагов&7."
       - id: "emerald_stack"
         type: "ITEM"
         material: "EMERALD"
         amount: 128
-        description: "<green>128 шт. Изумрудов</green>"
+        description: "&#8BEAFF128 шт. Изумрудов&7."
       - id: "crossbow_price"
         type: "ITEM"
         material: "CROSSBOW"
         amount: 4
-        description: "<gold>4 шт. Арбалетов</gold>"
+        description: "&#8BEAFF4 шт. Арбалетов&7."
       - id: "spectral_arrow_stack"
         type: "ITEM"
         material: "SPECTRAL_ARROW"
         amount: 128
-        description: "<yellow>128 шт. Спектральных стрел</yellow>"
+        description: "&#8BEAFF128 шт. Спектральных стрел&7."
       - id: "vault_price_30k"
         type: "MONEY"
         amount: 30000
-        description: "<gold>30,000$ монет</gold>"
+        description: "&#8BEAFF30,000$ монет&7."
       - id: "donate_price_60"
         type: "DONATE_POINTS"
         amount: 60
-        description: "<light_purple>60 донат-очков</light_purple>"
+        description: "&#8BEAFF60 донат-очков&7."
       - id: "kill_pillagers_task"
         type: "TASK"
         task-type: "KILL_MOB"
         target: "PILLAGER"
         required-count: 35
-        description: "<red>Уничтожить 35 Разбойников</red>"
+        description: "&fУничтожить &#8BEAFF35 Разбойников&7."
       - id: "kill_ravager_task"
         type: "TASK"
         task-type: "KILL_MOB"
         target: "RAVAGER"
         required-count: 2
-        description: "<dark_red>Победить 2 Разорителей</dark_red>"
+        description: "&fПобедить &#8BEAFF2 Разорителей&7."
       - id: "arrow_bundle"
         type: "ITEM"
         material: "ARROW"
         amount: 256
-        description: "<gray>256 шт. Стрел</gray>"
+        description: "&#8BEAFF256 шт. Стрел&7."
       - id: "iron_block_stack"
         type: "ITEM"
         material: "IRON_BLOCK"
         amount: 32
-        description: "<white>32 шт. Железных блоков</white>"
+        description: "&#8BEAFF32 шт. Железных блоков&7."
 
   alchemist:
     display-name: "Алхимик"
@@ -690,113 +686,113 @@ professions:
         type: "ITEM"
         material: "EXPERIENCE_BOTTLE"
         amount: 64
-        name: "<gradient:#00FF00:#55FFFF>Флакон Древнего Опыта (64 шт)</gradient>"
+        name: "&#55FF55Флакон Древнего Опыта"
         lore:
-          - "<gray>Дарует чистейшую энергию знаний."
+          - "&f- Дарует чистейшую энергию &#55FF55древних знаний&7."
       - id: "effect_luck_24h"
         type: "EFFECT"
         effect-type: "LUCK"
         amplifier: 1
         duration-hours: 24
         material: "POTION"
-        name: "<gradient:#55FF55:#FFFF55>Благословение Фортуны (24ч)</gradient>"
+        name: "&#55FF55Благословение Фортуны"
         lore:
-          - "<gray>Дарует эффект <green>Удача II</green> на 24 часа."
+          - "&f- Дарует эффект &#55FF55Удача II &fна &#8BEAFF24 часа&7."
       - id: "effect_water_breathing_24h"
         type: "EFFECT"
         effect-type: "WATER_BREATHING"
         amplifier: 0
         duration-hours: 24
         material: "POTION"
-        name: "<gradient:#00AAAA:#55FFFF>Дыхание Океана (24ч)</gradient>"
+        name: "&#8BEAFFДыхание Океана"
         lore:
-          - "<gray>Дарует <aqua>Подводное дыхание</aqua> на 24 часа."
+          - "&f- Дарует эффект &#8BEAFFПодводное дыхание &fна &#8BEAFF24 часа&7."
       - id: "nether_wart_block_pack"
         type: "ITEM"
         material: "NETHER_WART"
         amount: 128
-        name: "<dark_red>Священный адский нарост</dark_red>"
+        name: "&#FF422EСвященный Адский Нарост"
         lore:
-          - "<gray>Основа высших зелий."
+          - "&f- Основа могущественных &#FF422Eвысших зелий&7."
       - id: "vault_alchemist_gold"
         type: "MONEY"
         amount: 50000
         material: "BLAZE_POWDER"
-        name: "<gold>Золото Алхимика ($50,000)</gold>"
+        name: "&#FFD700Золото Алхимика"
         lore:
-          - "<gray>Награда за тайные ингредиенты."
+          - "&f- Награда в размере &#8BEAFF50,000$ монет&7."
       - id: "player_points_alchemist"
         type: "DONATE_POINTS"
         amount: 140
         material: "NETHER_STAR"
-        name: "<light_purple>Философский Осколок (140 PO)</light_purple>"
+        name: "&#DDA0DDФилософский Осколок"
         lore:
-          - "<gray>Донат-валюта за алхимические открытия."
+          - "&f- Начисляет &#8BEAFF140 донат-очков &fна ваш баланс&7."
       - id: "dragon_head"
         type: "ITEM"
         material: "DRAGON_HEAD"
         amount: 1
-        name: "<dark_purple>Голова Дракона Края</dark_purple>"
+        name: "&#DDA0DDГолова Дракона Края"
         lore:
-          - "<gray>Древнейший трофей алхимии."
+          - "&f- Древнейший трофей &#DDA0DDалхимических тайн&7."
       - id: "shulker_box_bundle"
         type: "ITEM"
         material: "SHULKER_BOX"
         amount: 2
-        name: "<light_purple>Древний шалкеровый ящик</light_purple>"
+        name: "&#9ED5FFДревний Шалкеровый Ящик"
         lore:
-          - "<gray>Пространство для хранения зелий."
+          - "&f- Вместилище для хранения &#9ED5FFингредиентов&7."
     prices:
       - id: "brewing_stand_price"
         type: "ITEM"
         material: "BREWING_STAND"
         amount: 4
-        description: "<gold>4 шт. Зельеварок</gold>"
+        description: "&#8BEAFF4 шт. Зельеварок&7."
       - id: "blaze_rod_price"
         type: "ITEM"
         material: "BLAZE_ROD"
         amount: 32
-        description: "<gold>32 шт. Стержней ифрита</gold>"
+        description: "&#8BEAFF32 шт. Стержней ифрита&7."
       - id: "magma_cream_stack"
         type: "ITEM"
         material: "MAGMA_CREAM"
         amount: 64
-        description: "<dark_red>64 шт. Сгустков магмы</dark_red>"
+        description: "&#8BEAFF64 шт. Сгустков магмы&7."
       - id: "phantom_membrane_stack"
         type: "ITEM"
         material: "PHANTOM_MEMBRANE"
         amount: 16
-        description: "<gray>16 шт. Мембран фантома</gray>"
+        description: "&#8BEAFF16 шт. Мембран фантома&7."
       - id: "vault_price_22k"
         type: "MONEY"
         amount: 22000
-        description: "<gold>22,000$ монет</gold>"
+        description: "&#8BEAFF22,000$ монет&7."
       - id: "donate_price_50"
         type: "DONATE_POINTS"
         amount: 50
-        description: "<light_purple>50 донат-очков</light_purple>"
+        description: "&#8BEAFF50 донат-очков&7."
       - id: "kill_witches_task"
         type: "TASK"
         task-type: "KILL_MOB"
         target: "WITCH"
         required-count: 20
-        description: "<dark_purple>Уничтожить 20 Ведьм</dark_purple>"
+        description: "&fУничтожить &#8BEAFF20 Ведьм&7."
       - id: "kill_endermen_task"
         type: "TASK"
         task-type: "KILL_MOB"
         target: "ENDERMAN"
         required-count: 30
-        description: "<dark_aqua>Уничтожить 30 Эндерменов</dark_aqua>"
+        description: "&fУничтожить &#8BEAFF30 Эндерменов&7."
       - id: "fermented_spider_eye_stack"
         type: "ITEM"
         material: "FERMENTED_SPIDER_EYE"
         amount: 32
-        description: "<dark_red>32 шт. Маринованных паучьих глаз</dark_red>"
+        description: "&#8BEAFF32 шт. Маринованных глаз&7."
       - id: "glowstone_stack"
         type: "ITEM"
         material: "GLOWSTONE"
         amount: 64
-        description: "<yellow>64 шт. Светящегося камня</yellow>"
+        description: "&#8BEAFF64 шт. Светящегося камня&7."
 
   chef:
     display-name: "Повар"
@@ -806,112 +802,112 @@ professions:
         type: "ITEM"
         material: "COOKED_BEEF"
         amount: 128
-        name: "<gradient:#FF5500:#FFAA00>Стейк Древнейших Монархов</gradient>"
+        name: "&#FF7A45Стейк Древнейших Монархов"
         lore:
-          - "<gray>Приготовлен по забытым рецептам предков."
-          - "<yellow>Насыщение максимизировано.</yellow>"
+          - "&f- Приготовлен по рецептам &#FF7A45древних правителей&7."
+          - "&f- Максимально восстанавливает &#8BEAFFсытость&7."
       - id: "effect_absorption_24h"
         type: "EFFECT"
         effect-type: "ABSORPTION"
         amplifier: 1
         duration-hours: 24
         material: "POTION"
-        name: "<gradient:#FFFF55:#FFAA00>Сытость и Защита (24ч)</gradient>"
+        name: "&#FFD700Сытость и Защита"
         lore:
-          - "<gray>Дарует <yellow>Поглощение II</yellow> на 24 часа."
+          - "&f- Дарует эффект &#FFD700Поглощение II &fна &#8BEAFF24 часа&7."
       - id: "golden_apple_bundle"
         type: "ITEM"
         material: "GOLDEN_APPLE"
         amount: 32
-        name: "<gold>Корзина Золотых Яблок</gold>"
+        name: "&#FFD700Корзина Золотых Яблок"
         lore:
-          - "<gray>Отборные плоды высшего сорта."
+          - "&f- Отборные плоды &#FFD700высшего сорта&7."
       - id: "cake_of_immortality"
         type: "ITEM"
         material: "CAKE"
         amount: 5
-        name: "<gradient:#FF55AA:#FFFFFF>Торт Вечной Молодости</gradient>"
+        name: "&#FF7A45Торт Вечной Молодости"
         lore:
-          - "<gray>Изысканный десерт древней знати."
+          - "&f- Изысканный десерт &#FF7A45древней знати&7."
       - id: "vault_chef_money"
         type: "MONEY"
         amount: 35000
         material: "COOKED_PORKCHOP"
-        name: "<gold>Прибыль Ресторана ($35,000)</gold>"
+        name: "&#FFD700Прибыль Ресторана"
         lore:
-          - "<gray>Оплата за кулинарные шедевры."
+          - "&f- Награда в размере &#8BEAFF35,000$ монет&7."
       - id: "player_points_chef"
         type: "DONATE_POINTS"
         amount: 100
         material: "NETHER_STAR"
-        name: "<light_purple>Звезда Мишлен Древних (100 PO)</light_purple>"
+        name: "&#DDA0DDЗвезда Мишлен Древних"
         lore:
-          - "<gray>Донат-валюта за кулинарное искусство."
+          - "&f- Начисляет &#8BEAFF100 донат-очков &fна ваш баланс&7."
       - id: "cookie_legendary"
         type: "ITEM"
         material: "COOKIE"
         amount: 64
-        name: "<gold>Древнее волшебное печенье</gold>"
+        name: "&#FFD700Волшебное Печенье"
         lore:
-          - "<gray>Мгновенно восстанавливает здоровье."
+          - "&f- Мгновенно восстанавливает &#FFD700здоровье&7."
       - id: "mushroom_stew_pack"
         type: "ITEM"
         material: "SUSPICIOUS_STEW"
         amount: 8
-        name: "<dark_green>Загадочное древнее рагу</dark_green>"
+        name: "&#55FF55Загадочное Древнее Рагу"
         lore:
-          - "<gray>Скрывает мощные положительные эффекты."
+          - "&f- Содержит мощные &#55FF55положительные эффекты&7."
     prices:
       - id: "raw_beef_stack"
         type: "ITEM"
         material: "BEEF"
         amount: 128
-        description: "<red>128 шт. Сырой говядины</red>"
+        description: "&#8BEAFF128 шт. Сырой говядины&7."
       - id: "raw_pork_stack"
         type: "ITEM"
         material: "PORKCHOP"
         amount: 128
-        description: "<light_purple>128 шт. Сырой свинины</light_purple>"
+        description: "&#8BEAFF128 шт. Сырой свинины&7."
       - id: "sugar_stack"
         type: "ITEM"
         material: "SUGAR"
         amount: 128
-        description: "<white>128 шт. Сахара</white>"
+        description: "&#8BEAFF128 шт. Сахара&7."
       - id: "egg_stack"
         type: "ITEM"
         material: "EGG"
         amount: 64
-        description: "<white>64 шт. Куриных яиц</white>"
+        description: "&#8BEAFF64 шт. Куриных яиц&7."
       - id: "vault_price_12k"
         type: "MONEY"
         amount: 12000
-        description: "<gold>12,000$ монет</gold>"
+        description: "&#8BEAFF12,000$ монет&7."
       - id: "donate_price_30"
         type: "DONATE_POINTS"
         amount: 30
-        description: "<light_purple>30 донат-очков</light_purple>"
+        description: "&#8BEAFF30 донат-очков&7."
       - id: "kill_cows_task"
         type: "TASK"
         task-type: "KILL_MOB"
         target: "COW"
         required-count: 30
-        description: "<gold>Разделать 30 Коров</gold>"
+        description: "&fРазделать &#8BEAFF30 Коров&7."
       - id: "kill_pigs_task"
         type: "TASK"
         task-type: "KILL_MOB"
         target: "PIG"
         required-count: 30
-        description: "<light_purple>Разделать 30 Свиней</light_purple>"
+        description: "&fРазделать &#8BEAFF30 Свиней&7."
       - id: "milk_bucket_stack"
         type: "ITEM"
         material: "MILK_BUCKET"
         amount: 8
-        description: "<white>8 ведер молока</white>"
+        description: "&#8BEAFF8 ведер молока&7."
       - id: "cocoa_beans_stack"
         type: "ITEM"
         material: "COCOA_BEANS"
         amount: 64
-        description: "<gold>64 шт. Какао-бобов</gold>"
+        description: "&#8BEAFF64 шт. Какао-бобов&7."
 
   weaponsmith:
     display-name: "Оружейник"
@@ -921,10 +917,9 @@ professions:
         type: "ITEM"
         material: "NETHERITE_AXE"
         amount: 1
-        name: "<gradient:#FF2200:#FFAA00>Секира Древнего Палача</gradient>"
+        name: "&#FF422EСекира Древнего Палача"
         lore:
-          - "<gray>Раскалывает любые щиты и броню."
-          - "<aqua>Острота VI, Эффективность V, Прочность IV</aqua>"
+          - "&f- Раскалывает любые щиты с чарами &#8BEAFFОстрота VI&7."
         enchants:
           SHARPNESS: 6
           EFFICIENCY: 5
@@ -933,9 +928,9 @@ professions:
         type: "ITEM"
         material: "TRIDENT"
         amount: 1
-        name: "<gradient:#00FFFF:#0088FF>Трезубец Владыки Бурь</gradient>"
+        name: "&#8BEAFFТрезубец Владыки Бурь"
         lore:
-          - "<aqua>Тягун III, Громовержец I, Прочность IV, Починка</aqua>"
+          - "&f- Обладает чарами &#8BEAFFТягун III&7, &#8BEAFFГромовержец&7, &#8BEAFFПочинка&7."
         enchants:
           RIPTIDE: 3
           CHANNELING: 1
@@ -947,16 +942,16 @@ professions:
         amplifier: 0
         duration-hours: 24
         material: "POTION"
-        name: "<gradient:#FF5500:#FFFF55>Закалка Вулканов (24ч)</gradient>"
+        name: "&#FF7A45Закалка Вулканов"
         lore:
-          - "<gray>Дарует <red>Огнестойкость</red> на 24 часа."
+          - "&f- Дарует эффект &#FF7A45Огнестойкость &fна &#8BEAFF24 часа&7."
       - id: "netherite_leggings_legendary"
         type: "ITEM"
         material: "NETHERITE_LEGGINGS"
         amount: 1
-        name: "<gradient:#FF5555:#AA0000>Поножи Древнего Полководца</gradient>"
+        name: "&#FF422EПоножи Древнего Полководца"
         lore:
-          - "<aqua>Защита V, Прочность IV</aqua>"
+          - "&f- Обладает чарами &#8BEAFFЗащита V&7, &#8BEAFFПрочность IV&7."
         enchants:
           PROTECTION: 5
           UNBREAKING: 4
@@ -964,23 +959,23 @@ professions:
         type: "MONEY"
         amount: 50000
         material: "NETHERITE_SCRAP"
-        name: "<gold>Оружейный Бюджет ($50,000)</gold>"
+        name: "&#FFD700Оружейный Бюджет"
         lore:
-          - "<gray>Награда за поставку боевого арсенала."
+          - "&f- Награда в размере &#8BEAFF50,000$ монет&7."
       - id: "player_points_weaponsmith"
         type: "DONATE_POINTS"
         amount: 160
         material: "NETHER_STAR"
-        name: "<light_purple>Оружейная Марка (160 PO)</light_purple>"
+        name: "&#DDA0DDОружейная Марка"
         lore:
-          - "<gray>Донат-валюта за редкое вооружение."
+          - "&f- Начисляет &#8BEAFF160 донат-очков &fна ваш баланс&7."
       - id: "cross_bow_multishot"
         type: "ITEM"
         material: "CROSSBOW"
         amount: 1
-        name: "<gradient:#FF00AA:#FFAA00>Залповый Древний Самострел</gradient>"
+        name: "&#FF7A45Залповый Древний Самострел"
         lore:
-          - "<aqua>Залп I, Быстрая перезарядка III, Прочность IV</aqua>"
+          - "&f- Обладает чарами &#8BEAFFЗалп I&7, &#8BEAFFБыстрая перезарядка III&7."
         enchants:
           MULTISHOT: 1
           QUICK_CHARGE: 3
@@ -989,9 +984,9 @@ professions:
         type: "ITEM"
         material: "NETHERITE_BOOTS"
         amount: 1
-        name: "<gradient:#FF5555:#AA0000>Сапоги Покорителя Миров</gradient>"
+        name: "&#FF422EСапоги Покорителя Миров"
         lore:
-          - "<aqua>Защита V, Невесомость IV, Прочность IV</aqua>"
+          - "&f- Обладает чарами &#8BEAFFЗащита V&7, &#8BEAFFНевесомость IV&7."
         enchants:
           PROTECTION: 5
           FEATHER_FALLING: 4
@@ -1001,49 +996,49 @@ professions:
         type: "ITEM"
         material: "IRON_INGOT"
         amount: 128
-        description: "<white>128 шт. Железных слитков</white>"
+        description: "&#8BEAFF128 шт. Железных слитков&7."
       - id: "gold_ingot_stack"
         type: "ITEM"
         material: "GOLD_INGOT"
         amount: 64
-        description: "<yellow>64 шт. Золотых слитков</yellow>"
+        description: "&#8BEAFF64 шт. Золотых слитков&7."
       - id: "diamond_price_weapons"
         type: "ITEM"
         material: "DIAMOND"
         amount: 24
-        description: "<aqua>24 шт. Алмазов</aqua>"
+        description: "&#8BEAFF24 шт. Алмазов&7."
       - id: "flint_stack"
         type: "ITEM"
         material: "FLINT"
         amount: 64
-        description: "<dark_gray>64 шт. Кремня</dark_gray>"
+        description: "&#8BEAFF64 шт. Кремня&7."
       - id: "vault_price_28k"
         type: "MONEY"
         amount: 28000
-        description: "<gold>28,000$ монет</gold>"
+        description: "&#8BEAFF28,000$ монет&7."
       - id: "donate_price_55"
         type: "DONATE_POINTS"
         amount: 55
-        description: "<light_purple>55 донат-очков</light_purple>"
+        description: "&#8BEAFF55 донат-очков&7."
       - id: "kill_drowned_task"
         type: "TASK"
         task-type: "KILL_MOB"
         target: "DROWNED"
         required-count: 25
-        description: "<blue>Уничтожить 25 Утопленников</blue>"
+        description: "&fУничтожить &#8BEAFF25 Утопленников&7."
       - id: "kill_skeletons_task"
         type: "TASK"
         task-type: "KILL_MOB"
         target: "SKELETON"
         required-count: 35
-        description: "<white>Уничтожить 35 Скелетов</white>"
+        description: "&fУничтожить &#8BEAFF35 Скелетов&7."
       - id: "shield_stack"
         type: "ITEM"
         material: "SHIELD"
         amount: 3
-        description: "<gray>3 шт. Щитов</gray>"
+        description: "&#8BEAFF3 шт. Щитов&7."
       - id: "bow_stack"
         type: "ITEM"
         material: "BOW"
         amount: 5
-        description: "<gold>5 шт. Луков</gold>"
+        description: "&#8BEAFF5 шт. Луков&7."

@@ -17,8 +17,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public final class Messages {
+    private static final Pattern HEX_PATTERN = Pattern.compile("&#([0-9a-fA-F]{6})");
     private final Plugin plugin;
     private final Logger logger;
     private final MiniMessage miniMessage;
@@ -67,6 +70,43 @@ public final class Messages {
         }
     }
 
+    public static String toMiniMessage(String input) {
+        if (input == null) return "";
+
+        Matcher matcher = HEX_PATTERN.matcher(input);
+        StringBuilder sb = new StringBuilder();
+        while (matcher.find()) {
+            matcher.appendReplacement(sb, "<#" + matcher.group(1) + ">");
+        }
+        matcher.appendTail(sb);
+        String text = sb.toString();
+
+        text = text.replace("&0", "<black>")
+                .replace("&1", "<dark_blue>")
+                .replace("&2", "<dark_green>")
+                .replace("&3", "<dark_aqua>")
+                .replace("&4", "<dark_red>")
+                .replace("&5", "<dark_purple>")
+                .replace("&6", "<gold>")
+                .replace("&7", "<gray>")
+                .replace("&8", "<dark_gray>")
+                .replace("&9", "<blue>")
+                .replace("&a", "<green>")
+                .replace("&b", "<aqua>")
+                .replace("&c", "<red>")
+                .replace("&d", "<light_purple>")
+                .replace("&e", "<yellow>")
+                .replace("&f", "<white>")
+                .replace("&l", "<bold>")
+                .replace("&m", "<strikethrough>")
+                .replace("&n", "<underlined>")
+                .replace("&o", "<italic>")
+                .replace("&k", "<obfuscated>")
+                .replace("&r", "<reset>");
+
+        return text;
+    }
+
     public String getRaw(String key) {
         String value = stringCache.get(key);
         if (value == null) {
@@ -85,29 +125,34 @@ public final class Messages {
         return list;
     }
 
+    public Component parse(String rawText, TagResolver... resolvers) {
+        String formatted = toMiniMessage(rawText);
+        return miniMessage.deserialize(formatted, resolvers);
+    }
+
     public Component getComponent(String key, TagResolver... resolvers) {
-        String raw = getRaw(key);
-        return miniMessage.deserialize(raw, resolvers);
+        return parse(getRaw(key), resolvers);
     }
 
     public List<Component> getComponentList(String key, TagResolver... resolvers) {
         List<String> rawList = getRawList(key);
         return rawList.stream()
-                .map(line -> miniMessage.deserialize(line, resolvers))
+                .map(line -> parse(line, resolvers))
                 .toList();
     }
 
     public void send(CommandSender sender, String key, TagResolver... resolvers) {
         if (sender == null) return;
         String raw = getRaw(key);
-        Component component = miniMessage.deserialize(prefix + raw, resolvers);
+        String combined = (prefix.isEmpty() ? "" : prefix + " ") + raw;
+        Component component = parse(combined, resolvers);
         sender.sendMessage(component);
     }
 
     public void sendPlain(CommandSender sender, String key, TagResolver... resolvers) {
         if (sender == null) return;
         String raw = getRaw(key);
-        Component component = miniMessage.deserialize(raw, resolvers);
+        Component component = parse(raw, resolvers);
         sender.sendMessage(component);
     }
 
