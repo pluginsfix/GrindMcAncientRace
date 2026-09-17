@@ -14,30 +14,38 @@ import pluginsfix.grindmcancientrace.domain.Profession;
 import pluginsfix.grindmcancientrace.domain.TradeGenerator;
 import pluginsfix.grindmcancientrace.domain.VillagerTrade;
 import pluginsfix.grindmcancientrace.gui.AncientRaceGui;
+import pluginsfix.grindmcancientrace.hook.PlaceholderApiHook;
 import pluginsfix.grindmcancientrace.storage.TradeRepository;
+import pluginsfix.grindmcancientrace.text.Messages;
 
 import java.util.List;
 import java.util.Optional;
 
 public final class VillagerInteractListener implements Listener {
     private final PluginConfig config;
+    private final Messages messages;
     private final EggManager eggManager;
     private final TradeRepository tradeRepository;
     private final TradeGenerator tradeGenerator;
     private final AncientRaceGui gui;
+    private final PlaceholderApiHook papiHook;
 
     public VillagerInteractListener(
             PluginConfig config,
+            Messages messages,
             EggManager eggManager,
             TradeRepository tradeRepository,
             TradeGenerator tradeGenerator,
-            AncientRaceGui gui
+            AncientRaceGui gui,
+            PlaceholderApiHook papiHook
     ) {
         this.config = config;
+        this.messages = messages;
         this.eggManager = eggManager;
         this.tradeRepository = tradeRepository;
         this.tradeGenerator = tradeGenerator;
         this.gui = gui;
+        this.papiHook = papiHook;
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -54,6 +62,11 @@ public final class VillagerInteractListener implements Listener {
         if (profOpt.isEmpty()) return;
 
         Profession profession = profOpt.get();
+        String profDisplayName = messages.getRaw("professions." + profession.key());
+        if (papiHook != null) {
+            papiHook.setPlayerProfession(player.getUniqueId(), profDisplayName);
+        }
+
         Optional<List<VillagerTrade>> tradesOpt = tradeRepository.getTrades(villager.getUniqueId(), profession);
 
         List<VillagerTrade> trades;

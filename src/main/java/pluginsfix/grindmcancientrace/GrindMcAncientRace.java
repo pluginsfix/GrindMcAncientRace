@@ -67,18 +67,20 @@ public final class GrindMcAncientRace extends JavaPlugin {
         this.spawnListener = new VillagerSpawnListener(this, pluginConfig, eggManager, tradeRepository, tradeGenerator, hologramsHook);
         this.effectListener = new PlayerEffectListener(this, pluginConfig, effectRepository);
 
+        PlaceholderApiHook papiHook = null;
+        if (getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            papiHook = new PlaceholderApiHook(this, effectRepository, messages);
+            papiHook.register();
+        }
+
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(spawnListener, this);
         pm.registerEvents(new SpawnerEggListener(eggManager, messages), this);
-        pm.registerEvents(new VillagerInteractListener(pluginConfig, eggManager, tradeRepository, tradeGenerator, gui), this);
+        pm.registerEvents(new VillagerInteractListener(pluginConfig, messages, eggManager, tradeRepository, tradeGenerator, gui, papiHook), this);
         pm.registerEvents(new InventoryListener(this, pluginConfig, messages, vaultHook, pointsHook, effectRepository, taskRepository, cooldownRepository, gui), this);
         pm.registerEvents(effectListener, this);
         pm.registerEvents(new VillagerLifecycleListener(eggManager, hologramsHook, tradeRepository), this);
         pm.registerEvents(new TaskProgressListener(taskRepository), this);
-
-        if (pm.isPluginEnabled("PlaceholderAPI")) {
-            new PlaceholderApiHook(this, effectRepository, messages).register();
-        }
 
         PluginCommand command = getCommand("ancientrace");
         if (command != null) {

@@ -9,17 +9,28 @@ import pluginsfix.grindmcancientrace.domain.ActiveEffect;
 import pluginsfix.grindmcancientrace.storage.EffectRepository;
 import pluginsfix.grindmcancientrace.text.Messages;
 
+import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public final class PlaceholderApiHook extends PlaceholderExpansion {
     private final Plugin plugin;
     private final EffectRepository effectRepository;
     private final Messages messages;
+    private final Map<UUID, String> playerLastProfession;
 
     public PlaceholderApiHook(Plugin plugin, EffectRepository effectRepository, Messages messages) {
         this.plugin = plugin;
         this.effectRepository = effectRepository;
         this.messages = messages;
+        this.playerLastProfession = new ConcurrentHashMap<>();
+    }
+
+    public void setPlayerProfession(UUID playerUuid, String professionName) {
+        if (playerUuid != null && professionName != null) {
+            playerLastProfession.put(playerUuid, professionName);
+        }
     }
 
     @Override
@@ -45,6 +56,10 @@ public final class PlaceholderApiHook extends PlaceholderExpansion {
     @Override
     public @Nullable String onRequest(OfflinePlayer player, @NotNull String params) {
         if (player == null) return "";
+
+        if (params.equalsIgnoreCase("profession")) {
+            return playerLastProfession.getOrDefault(player.getUniqueId(), "");
+        }
 
         if (params.startsWith("effect_remaining_")) {
             String effectType = params.substring("effect_remaining_".length()).toUpperCase();
