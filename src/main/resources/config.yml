@@ -1,6 +1,7 @@
-config-version: 1
+config-version: 2
 
 spawn-chance-percent: 2.5
+trade-cooldown-minutes: 60
 
 hologram:
   enabled: true
@@ -15,6 +16,14 @@ gui:
   filler-item:
     material: "BLACK_STAINED_GLASS_PANE"
     name: " "
+  cooldown-item:
+    material: "BARRIER"
+    name: "<gradient:#FF0000:#FFAA00>Товар на перезарядке</gradient>"
+    lore:
+      - "<gray>Вы уже приобрели этот товар.</gray>"
+      - ""
+      - "<yellow>Следующий обмен доступен через:</yellow>"
+      - "<gold>⌛ <time></gold>"
   trade-slots:
     - 10
     - 12

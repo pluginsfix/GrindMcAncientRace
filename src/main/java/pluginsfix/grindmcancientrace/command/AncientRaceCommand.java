@@ -1,15 +1,22 @@
 package pluginsfix.grindmcancientrace.command;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import pluginsfix.grindmcancientrace.domain.EggManager;
 import pluginsfix.grindmcancientrace.domain.Profession;
@@ -17,14 +24,19 @@ import pluginsfix.grindmcancientrace.hook.FancyHologramsHook;
 import pluginsfix.grindmcancientrace.listener.VillagerSpawnListener;
 import pluginsfix.grindmcancientrace.text.Messages;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
-import java.util.function.Consumer;
 
 public final class AncientRaceCommand implements CommandExecutor, TabCompleter {
+    private final Plugin plugin;
     private final Messages messages;
     private final EggManager eggManager;
     private final VillagerSpawnListener spawnListener;
@@ -32,12 +44,14 @@ public final class AncientRaceCommand implements CommandExecutor, TabCompleter {
     private final Runnable reloadAction;
 
     public AncientRaceCommand(
+            Plugin plugin,
             Messages messages,
             EggManager eggManager,
             VillagerSpawnListener spawnListener,
             FancyHologramsHook hologramsHook,
             Runnable reloadAction
     ) {
+        this.plugin = plugin;
         this.messages = messages;
         this.eggManager = eggManager;
         this.spawnListener = spawnListener;
@@ -62,6 +76,7 @@ public final class AncientRaceCommand implements CommandExecutor, TabCompleter {
             case "spawn" -> handleSpawn(sender, args);
             case "give" -> handleGive(sender, args);
             case "remove" -> handleRemove(sender, args);
+            case "additem" -> handleAddItem(sender, args);
             case "reload" -> handleReload(sender);
             default -> messages.send(sender, "command.usage");
         }
@@ -161,6 +176,92 @@ public final class AncientRaceCommand implements CommandExecutor, TabCompleter {
                 Placeholder.parsed("amount", String.valueOf(amount)));
     }
 
+    private void handleAddItem(CommandSender sender, String[] args) {
+        if (!sender.hasPermission("grindmcancientrace.admin.additem")) {
+            messages.send(sender, "command.no-permission");
+            return;
+        }
+
+        if (!(sender instanceof Player player)) {
+            messages.send(sender, "command.players-only");
+            return;
+        }
+
+        if (args.length < 3) {
+            messages.send(sender, "command.additem-usage");
+            return;
+        }
+
+        Optional<Profession> profOpt = Profession.fromKey(args[1]);
+        if (profOpt.isEmpty()) {
+            sendInvalidProfession(sender);
+            return;
+        }
+
+        Profession profession = profOpt.get();
+        String rewardId = args[2].toLowerCase().trim();
+
+        ItemStack handItem = player.getInventory().getItemInMainHand();
+        if (handItem.getType() == Material.AIR) {
+            messages.send(player, "command.no-item-in-hand");
+            return;
+        }
+
+        Map<String, Object> rewardMap = new LinkedHashMap<>();
+        rewardMap.put("id", rewardId);
+        rewardMap.put("type", "ITEM");
+        rewardMap.put("material", handItem.getType().name());
+        rewardMap.put("amount", handItem.getAmount());
+
+        ItemMeta meta = handItem.getItemMeta();
+        if (meta != null) {
+            if (meta.hasDisplayName()) {
+                Component comp = meta.displayName();
+                if (comp != null) {
+                    rewardMap.put("name", messages.miniMessage().serialize(comp));
+                }
+            }
+            if (meta.hasLore()) {
+                List<Component> lore = meta.lore();
+                if (lore != null) {
+                    List<String> serializedLore = lore.stream().map(l -> messages.miniMessage().serialize(l)).toList();
+                    rewardMap.put("lore", serializedLore);
+                }
+            }
+            if (meta.hasCustomModelData()) {
+                rewardMap.put("custom-model-data", meta.getCustomModelData());
+            }
+            if (!meta.getEnchants().isEmpty()) {
+                Map<String, Integer> enchants = new LinkedHashMap<>();
+                for (var entry : meta.getEnchants().entrySet()) {
+                    enchants.put(entry.getKey().getName(), entry.getValue());
+                }
+                rewardMap.put("enchants", enchants);
+            }
+        }
+
+        File configFile = new File(plugin.getDataFolder(), "config.yml");
+        YamlConfiguration yaml = YamlConfiguration.loadConfiguration(configFile);
+
+        String path = "professions." + profession.key() + ".rewards";
+        List<Map<?, ?>> currentRewards = yaml.getMapList(path);
+        List<Map<?, ?>> updatedRewards = new ArrayList<>(currentRewards);
+        updatedRewards.add(rewardMap);
+
+        yaml.set(path, updatedRewards);
+        try {
+            yaml.save(configFile);
+            reloadAction.run();
+
+            String profDisplayName = messages.getRaw("professions." + profession.key());
+            messages.send(player, "command.item-added",
+                    Placeholder.parsed("profession", profDisplayName),
+                    Placeholder.parsed("id", rewardId));
+        } catch (IOException e) {
+            plugin.getLogger().warning("Failed to save config.yml after additem: " + e.getMessage());
+        }
+    }
+
     private void handleRemove(CommandSender sender, String[] args) {
         if (!sender.hasPermission("grindmcancientrace.admin.remove")) {
             messages.send(sender, "command.no-permission");
@@ -213,6 +314,7 @@ public final class AncientRaceCommand implements CommandExecutor, TabCompleter {
             List<String> subs = new ArrayList<>();
             if (sender.hasPermission("grindmcancientrace.admin.spawn")) subs.add("spawn");
             if (sender.hasPermission("grindmcancientrace.admin.give")) subs.add("give");
+            if (sender.hasPermission("grindmcancientrace.admin.additem")) subs.add("additem");
             if (sender.hasPermission("grindmcancientrace.admin.remove")) subs.add("remove");
             if (sender.hasPermission("grindmcancientrace.admin.reload")) subs.add("reload");
             return filterPrefix(subs, args[0]);
@@ -222,6 +324,15 @@ public final class AncientRaceCommand implements CommandExecutor, TabCompleter {
             List<String> profs = new ArrayList<>(Arrays.stream(Profession.values()).map(Profession::key).toList());
             profs.add("random");
             return filterPrefix(profs, args[1]);
+        }
+
+        if (args.length == 2 && args[0].equalsIgnoreCase("additem")) {
+            List<String> profs = new ArrayList<>(Arrays.stream(Profession.values()).map(Profession::key).toList());
+            return filterPrefix(profs, args[1]);
+        }
+
+        if (args.length == 3 && args[0].equalsIgnoreCase("additem")) {
+            return List.of("custom_reward_1", "legendary_sword", "special_armor");
         }
 
         if (args.length == 2 && args[0].equalsIgnoreCase("give")) {

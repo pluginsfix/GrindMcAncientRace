@@ -21,17 +21,20 @@ import pluginsfix.grindmcancientrace.domain.ActiveEffect;
 import pluginsfix.grindmcancientrace.domain.PriceRequirement;
 import pluginsfix.grindmcancientrace.domain.TradeReward;
 import pluginsfix.grindmcancientrace.domain.VillagerTrade;
+import pluginsfix.grindmcancientrace.gui.AncientRaceGui;
 import pluginsfix.grindmcancientrace.gui.AncientRaceGuiHolder;
 import pluginsfix.grindmcancientrace.hook.PlayerPointsHook;
 import pluginsfix.grindmcancientrace.hook.VaultEconomyHook;
 import pluginsfix.grindmcancientrace.storage.EffectRepository;
 import pluginsfix.grindmcancientrace.storage.TaskProgressRepository;
+import pluginsfix.grindmcancientrace.storage.TradeCooldownRepository;
 import pluginsfix.grindmcancientrace.text.Messages;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.OptionalLong;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -43,6 +46,8 @@ public final class InventoryListener implements Listener {
     private final PlayerPointsHook pointsHook;
     private final EffectRepository effectRepository;
     private final TaskProgressRepository taskRepository;
+    private final TradeCooldownRepository cooldownRepository;
+    private final AncientRaceGui gui;
     private final Map<UUID, Long> clickDebounce;
 
     public InventoryListener(
@@ -52,7 +57,9 @@ public final class InventoryListener implements Listener {
             VaultEconomyHook vaultHook,
             PlayerPointsHook pointsHook,
             EffectRepository effectRepository,
-            TaskProgressRepository taskRepository
+            TaskProgressRepository taskRepository,
+            TradeCooldownRepository cooldownRepository,
+            AncientRaceGui gui
     ) {
         this.plugin = plugin;
         this.config = config;
@@ -61,6 +68,8 @@ public final class InventoryListener implements Listener {
         this.pointsHook = pointsHook;
         this.effectRepository = effectRepository;
         this.taskRepository = taskRepository;
+        this.cooldownRepository = cooldownRepository;
+        this.gui = gui;
         this.clickDebounce = new ConcurrentHashMap<>();
     }
 
@@ -98,11 +107,18 @@ public final class InventoryListener implements Listener {
         }
         clickDebounce.put(player.getUniqueId(), now);
 
+        OptionalLong cooldownOpt = cooldownRepository.getCooldownRemaining(player.getUniqueId(), holder.villagerUuid(), tradeIndex, now);
+        if (cooldownOpt.isPresent()) {
+            String formattedTime = cooldownRepository.formatCooldown(cooldownOpt.getAsLong());
+            messages.send(player, "trade.on-cooldown", Placeholder.parsed("time", formattedTime));
+            return;
+        }
+
         VillagerTrade trade = holder.trades().get(tradeIndex);
-        processTrade(player, trade);
+        processTrade(player, holder, tradeIndex, slot, trade);
     }
 
-    private void processTrade(Player player, VillagerTrade trade) {
+    private void processTrade(Player player, AncientRaceGuiHolder holder, int tradeIndex, int slot, VillagerTrade trade) {
         PriceRequirement price = trade.price();
         TradeReward reward = trade.reward();
 
@@ -131,6 +147,13 @@ public final class InventoryListener implements Listener {
         }
 
         grantReward(player, reward);
+
+        long cooldownMillis = Math.max(1L, config.tradeCooldownMinutes()) * 60_000L;
+        long availableAt = System.currentTimeMillis() + cooldownMillis;
+        cooldownRepository.setTradeCooldown(player.getUniqueId(), holder.villagerUuid(), tradeIndex, availableAt);
+
+        holder.getInventory().setItem(slot, gui.buildCooldownItem(cooldownMillis));
+
         messages.send(player, "trade.success");
     }
 

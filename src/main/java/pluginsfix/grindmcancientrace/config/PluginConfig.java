@@ -8,6 +8,7 @@ import java.util.Optional;
 
 public record PluginConfig(
         double spawnChancePercent,
+        long tradeCooldownMinutes,
         boolean hologramEnabled,
         boolean hologramShadow,
         double hologramHeightOffset,
@@ -17,6 +18,9 @@ public record PluginConfig(
         int guiSize,
         String fillerMaterial,
         String fillerName,
+        String cooldownMaterial,
+        String cooldownName,
+        List<String> cooldownLore,
         List<Integer> tradeSlots,
         List<String> loreHeader,
         List<String> lorePriceSection,

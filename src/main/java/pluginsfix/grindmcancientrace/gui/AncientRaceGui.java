@@ -15,20 +15,24 @@ import pluginsfix.grindmcancientrace.config.PluginConfig;
 import pluginsfix.grindmcancientrace.domain.Profession;
 import pluginsfix.grindmcancientrace.domain.TradeReward;
 import pluginsfix.grindmcancientrace.domain.VillagerTrade;
+import pluginsfix.grindmcancientrace.storage.TradeCooldownRepository;
 import pluginsfix.grindmcancientrace.text.Messages;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.OptionalLong;
 import java.util.UUID;
 
 public final class AncientRaceGui {
     private final PluginConfig config;
     private final Messages messages;
+    private final TradeCooldownRepository cooldownRepository;
     private final MiniMessage miniMessage;
 
-    public AncientRaceGui(PluginConfig config, Messages messages) {
+    public AncientRaceGui(PluginConfig config, Messages messages, TradeCooldownRepository cooldownRepository) {
         this.config = config;
         this.messages = messages;
+        this.cooldownRepository = cooldownRepository;
         this.miniMessage = messages.miniMessage();
     }
 
@@ -45,15 +49,41 @@ public final class AncientRaceGui {
             inv.setItem(i, filler);
         }
 
+        long now = System.currentTimeMillis();
         List<Integer> slots = config.tradeSlots();
         for (int i = 0; i < trades.size() && i < slots.size(); i++) {
             VillagerTrade trade = trades.get(i);
             int slot = slots.get(i);
-            ItemStack tradeItem = buildTradeDisplayItem(trade);
-            inv.setItem(slot, tradeItem);
+
+            OptionalLong cooldownOpt = cooldownRepository.getCooldownRemaining(player.getUniqueId(), villagerUuid, i, now);
+            if (cooldownOpt.isPresent()) {
+                inv.setItem(slot, buildCooldownItem(cooldownOpt.getAsLong()));
+            } else {
+                inv.setItem(slot, buildTradeDisplayItem(trade));
+            }
         }
 
         player.openInventory(inv);
+    }
+
+    public ItemStack buildCooldownItem(long remainingMillis) {
+        Material mat = Material.matchMaterial(config.cooldownMaterial());
+        if (mat == null) mat = Material.BARRIER;
+        ItemStack item = new ItemStack(mat);
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null) return item;
+
+        String formattedTime = cooldownRepository.formatCooldown(remainingMillis);
+        meta.displayName(miniMessage.deserialize(config.cooldownName()));
+
+        List<Component> lore = new ArrayList<>();
+        for (String line : config.cooldownLore()) {
+            lore.add(miniMessage.deserialize(line, Placeholder.parsed("time", formattedTime)));
+        }
+        meta.lore(lore);
+        meta.addItemFlags(ItemFlag.HIDE_ADDITIONAL_TOOLTIP, ItemFlag.HIDE_ATTRIBUTES);
+        item.setItemMeta(meta);
+        return item;
     }
 
     private ItemStack createFillerItem() {
@@ -69,7 +99,7 @@ public final class AncientRaceGui {
         return item;
     }
 
-    private ItemStack buildTradeDisplayItem(VillagerTrade trade) {
+    public ItemStack buildTradeDisplayItem(VillagerTrade trade) {
         TradeReward reward = trade.reward();
         Material mat = getMaterialForReward(reward);
         int amount = getAmountForReward(reward);

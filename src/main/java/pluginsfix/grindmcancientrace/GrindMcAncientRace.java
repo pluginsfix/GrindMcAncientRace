@@ -1,6 +1,5 @@
 package pluginsfix.grindmcancientrace;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -24,6 +23,7 @@ import pluginsfix.grindmcancientrace.listener.VillagerSpawnListener;
 import pluginsfix.grindmcancientrace.storage.Database;
 import pluginsfix.grindmcancientrace.storage.EffectRepository;
 import pluginsfix.grindmcancientrace.storage.TaskProgressRepository;
+import pluginsfix.grindmcancientrace.storage.TradeCooldownRepository;
 import pluginsfix.grindmcancientrace.storage.TradeRepository;
 import pluginsfix.grindmcancientrace.text.Messages;
 
@@ -32,6 +32,7 @@ public final class GrindMcAncientRace extends JavaPlugin {
     private Messages messages;
     private Database database;
     private TradeRepository tradeRepository;
+    private TradeCooldownRepository cooldownRepository;
     private EffectRepository effectRepository;
     private TaskProgressRepository taskRepository;
     private VaultEconomyHook vaultHook;
@@ -51,6 +52,7 @@ public final class GrindMcAncientRace extends JavaPlugin {
 
         this.database = new Database(getDataFolder(), pluginConfig);
         this.tradeRepository = new TradeRepository(database, pluginConfig, getLogger());
+        this.cooldownRepository = new TradeCooldownRepository(database, getLogger());
         this.effectRepository = new EffectRepository(database, getLogger());
         this.taskRepository = new TaskProgressRepository(database, getLogger());
 
@@ -60,7 +62,7 @@ public final class GrindMcAncientRace extends JavaPlugin {
 
         this.eggManager = new EggManager(this, messages);
         this.tradeGenerator = new TradeGenerator();
-        this.gui = new AncientRaceGui(pluginConfig, messages);
+        this.gui = new AncientRaceGui(pluginConfig, messages, cooldownRepository);
 
         this.spawnListener = new VillagerSpawnListener(this, pluginConfig, eggManager, tradeRepository, tradeGenerator, hologramsHook);
         this.effectListener = new PlayerEffectListener(this, pluginConfig, effectRepository);
@@ -69,7 +71,7 @@ public final class GrindMcAncientRace extends JavaPlugin {
         pm.registerEvents(spawnListener, this);
         pm.registerEvents(new SpawnerEggListener(eggManager, messages), this);
         pm.registerEvents(new VillagerInteractListener(pluginConfig, eggManager, tradeRepository, tradeGenerator, gui), this);
-        pm.registerEvents(new InventoryListener(this, pluginConfig, messages, vaultHook, pointsHook, effectRepository, taskRepository), this);
+        pm.registerEvents(new InventoryListener(this, pluginConfig, messages, vaultHook, pointsHook, effectRepository, taskRepository, cooldownRepository, gui), this);
         pm.registerEvents(effectListener, this);
         pm.registerEvents(new VillagerLifecycleListener(eggManager, hologramsHook, tradeRepository), this);
         pm.registerEvents(new TaskProgressListener(taskRepository), this);
@@ -81,6 +83,7 @@ public final class GrindMcAncientRace extends JavaPlugin {
         PluginCommand command = getCommand("ancientrace");
         if (command != null) {
             AncientRaceCommand cmdExecutor = new AncientRaceCommand(
+                    this,
                     messages,
                     eggManager,
                     spawnListener,

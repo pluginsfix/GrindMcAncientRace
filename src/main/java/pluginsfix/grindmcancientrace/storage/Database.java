@@ -65,10 +65,21 @@ public final class Database implements AutoCloseable {
                 );
                 """;
 
+        String createCooldownsTable = """
+                CREATE TABLE IF NOT EXISTS player_trade_cooldowns (
+                    player_uuid TEXT NOT NULL,
+                    villager_uuid TEXT NOT NULL,
+                    slot_index INTEGER NOT NULL,
+                    available_at INTEGER NOT NULL,
+                    PRIMARY KEY (player_uuid, villager_uuid, slot_index)
+                );
+                """;
+
         try (Connection conn = getConnection(); Statement stmt = conn.createStatement()) {
             stmt.execute(createTradesTable);
             stmt.execute(createEffectsTable);
             stmt.execute(createTaskProgressTable);
+            stmt.execute(createCooldownsTable);
         } catch (SQLException e) {
             throw new IllegalStateException("Failed to initialize database schema", e);
         }

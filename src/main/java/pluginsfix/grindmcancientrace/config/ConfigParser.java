@@ -19,6 +19,7 @@ public final class ConfigParser {
 
     public static PluginConfig parse(FileConfiguration config) {
         double spawnChancePercent = config.getDouble("spawn-chance-percent", 2.0);
+        long tradeCooldownMinutes = config.getLong("trade-cooldown-minutes", 60L);
 
         boolean hologramEnabled = config.getBoolean("hologram.enabled", true);
         boolean hologramShadow = config.getBoolean("hologram.shadow", true);
@@ -30,6 +31,14 @@ public final class ConfigParser {
         int guiSize = config.getInt("gui.size", 54);
         String fillerMaterial = config.getString("gui.filler-item.material", "BLACK_STAINED_GLASS_PANE");
         String fillerName = config.getString("gui.filler-item.name", " ");
+
+        String cooldownMaterial = config.getString("gui.cooldown-item.material", "BARRIER");
+        String cooldownName = config.getString("gui.cooldown-item.name", "<red>Предмет на перезарядке</red>");
+        List<String> cooldownLore = config.getStringList("gui.cooldown-item.lore");
+        if (cooldownLore.isEmpty()) {
+            cooldownLore = List.of("<gray>Следующий обмен доступен через:</gray>", "<gold><time></gold>");
+        }
+
         List<Integer> tradeSlots = config.getIntegerList("gui.trade-slots");
         if (tradeSlots.isEmpty()) {
             tradeSlots = List.of(10, 12, 14, 16, 28, 30, 32, 34);
@@ -64,6 +73,7 @@ public final class ConfigParser {
 
         return new PluginConfig(
                 spawnChancePercent,
+                tradeCooldownMinutes,
                 hologramEnabled,
                 hologramShadow,
                 hologramHeightOffset,
@@ -73,6 +83,9 @@ public final class ConfigParser {
                 guiSize,
                 fillerMaterial,
                 fillerName,
+                cooldownMaterial,
+                cooldownName,
+                cooldownLore,
                 tradeSlots,
                 loreHeader,
                 lorePriceSection,
@@ -91,13 +104,11 @@ public final class ConfigParser {
 
         for (String key : section.getKeys(false)) {
             ConfigurationSection itemSec = section.getConfigurationSection(key);
-            if (itemSec == null) {
-                Map<?, ?> map = section.getMapList(key).isEmpty() ? null : null;
-                continue;
-            }
-            TradeReward reward = parseSingleReward(itemSec);
-            if (reward != null) {
-                rewards.add(reward);
+            if (itemSec != null) {
+                TradeReward reward = parseSingleReward(itemSec);
+                if (reward != null) {
+                    rewards.add(reward);
+                }
             }
         }
 

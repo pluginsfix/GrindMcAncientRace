@@ -2,9 +2,12 @@ prefix: "<gradient:#FFD700:#FFA500>[Древняя Раса]</gradient> "
 command:
   no-permission: "<red>У вас недостаточно прав для выполнения этой команды."
   players-only: "<red>Эта команда доступна только игрокам."
-  usage: "<yellow>Использование: <gold>/ancientrace <spawn|give|reload|remove></gold>"
+  usage: "<yellow>Использование: <gold>/ancientrace <spawn|give|reload|remove|additem></gold>"
   give-usage: "<yellow>Использование: <gold>/ancientrace give <игрок> <профессия|random> [количество]</gold>"
   spawn-usage: "<yellow>Использование: <gold>/ancientrace spawn <профессия|random></gold>"
+  additem-usage: "<yellow>Использование: <gold>/ancientrace additem <профессия> <id_товара></gold>"
+  no-item-in-hand: "<red>Возьмите предмет в основную руку перед добавлением!"
+  item-added: "<green>Предмет успешно добавлен в пул наград профессии <gold><profession></gold> с ID <yellow><id></yellow>! Настройте цены в config.yml."
   invalid-profession: "<red>Указана несуществующая профессия! Доступные: <yellow><professions></yellow>"
   player-not-found: "<red>Игрок не найден в сети."
   invalid-amount: "<red>Количество должно быть положительным числом."
@@ -20,6 +23,7 @@ spawner:
 
 trade:
   success: "<green>Вы успешно совершили обмен с древним жителем!"
+  on-cooldown: "<red>Этот товар находится на перезарядке! Доступен через: <gold><time></gold>."
   not-enough-items: "<red>У вас недостаточно предметов для обмена! Требуется: <gold><item></gold> x<gold><amount></gold>."
   not-enough-money: "<red>У вас недостаточно монет! Требуется: <gold><amount></gold>$."
   not-enough-points: "<red>У вас недостаточно донат-валюты! Требуется: <gold><amount></gold> очков."
